@@ -1,4 +1,7 @@
 bin/
 obj/
 dist/
+shim-publish/
+publish/
+_install/
 *.user

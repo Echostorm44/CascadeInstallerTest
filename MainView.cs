@@ -26,31 +26,63 @@ internal sealed class MainView : Component
 
     private async Task CheckAndDownloadAsync()
     {
+        // NOTE: the framework awaits OnMounted with ConfigureAwait(false), so continuations after
+        // an await run off the UI thread, where Invalidate() is not safe. UI state is therefore
+        // published through SetStatus / Dispatcher.Post. (Framework DX gap — see INSTALL-001 notes.)
         try
         {
-            status = "Checking for updates…";
-            Invalidate();
+            SetStatus("Checking for updates…");
 
             UpdateCheckResult result = await Updater.CheckNowAsync(LifetimeToken);
             if (!result.IsAvailable)
             {
-                status = "You are on the latest version.";
-                Invalidate();
+                SetStatus("You are on the latest version.");
+                Log($"check: up to date at {version}");
                 return;
             }
 
-            status = $"Downloading {result.Version} ({(result.IsDelta ? "delta" : "full package")})…";
-            Invalidate();
-
+            SetStatus($"Downloading {result.Version} ({(result.IsDelta ? "delta" : "full package")})…");
             await Updater.DownloadAsync(LifetimeToken);
-            updateReady = true;
-            status = $"Update {result.Version} ready. Restart to apply.";
-            Invalidate();
+
+            Dispatcher.Post(() =>
+            {
+                updateReady = true;
+                status = $"Update {result.Version} ready. Restart to apply.";
+                Invalidate();
+            });
+            Log($"staged {result.Version} via {(Updater.StagedViaDelta ? "delta" : "full")} (running {version})");
         }
         catch (Exception ex)
         {
-            status = $"Update check failed: {ex.Message}";
+            SetStatus($"Update check failed: {ex.Message}");
+            Log($"error: {ex.Message}");
+        }
+    }
+
+    private void SetStatus(string text)
+    {
+        status = text;
+        if (Dispatcher.IsOnUiThread)
+        {
             Invalidate();
+        }
+        else
+        {
+            Dispatcher.Post(Invalidate);
+        }
+    }
+
+    private void Log(string line)
+    {
+        try
+        {
+            string dir = System.IO.Path.GetDirectoryName(Environment.ProcessPath) ?? AppContext.BaseDirectory;
+            System.IO.File.AppendAllText(
+                System.IO.Path.Combine(dir, "update-log.txt"),
+                $"{DateTimeOffset.Now:s}  {line}{Environment.NewLine}");
+        }
+        catch (System.IO.IOException)
+        {
         }
     }
 

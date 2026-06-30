@@ -25,7 +25,11 @@ $shimOut = Join-Path $root "shim-publish"
 
 if (Test-Path $publish) { Remove-Item $publish -Recurse -Force }
 if (Test-Path $shimOut) { Remove-Item $shimOut -Recurse -Force }
+# Clean stale build state so a prior Debug/version build cannot collide with the Release publish.
+foreach ($d in "obj", "bin") { $p = Join-Path $root $d; if (Test-Path $p) { Remove-Item $p -Recurse -Force } }
 New-Item -ItemType Directory -Force -Path $dist | Out-Null
+# Keep dist to just this build's artifacts (publish downloads prior versions from GitHub for deltas).
+Get-ChildItem $dist -Include *.zip, *.cdelta, manifest.json -File -Recurse | Remove-Item -Force
 
 # 1. App
 dotnet publish (Join-Path $root "CascadeInstallerTest.csproj") -c Release -r $rid `

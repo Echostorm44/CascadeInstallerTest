@@ -23,5 +23,7 @@ Updater.Configure(
 App.Run<MainView>(config =>
 {
     config.UseEtch();
+    // The theme alternates each release so an update/rollback is visually obvious
+    // (v1 Dark, v2 Light, v3 Dark, …). The version label also shows the exact version.
     config.Theme = new AppleTheme(ThemeMode.Dark);
 });
