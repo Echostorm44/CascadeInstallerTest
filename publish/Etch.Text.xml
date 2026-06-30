@@ -1,0 +1,448 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Text</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Text.Atlas.GlyphAtlas">
+            <summary>
+            Multi-page glyph atlas. Each page is an independent texture + <see cref="T:Etch.Text.Atlas.LruCache"/>.
+            Pages manage their own LRU eviction; there is no global LRU layer.
+            </summary>
+        </member>
+        <member name="P:Etch.Text.Atlas.GlyphAtlas.PageCount">
+            <summary>Number of active pages.</summary>
+        </member>
+        <member name="P:Etch.Text.Atlas.GlyphAtlas.GlyphCount">
+            <summary>Total glyph count across all pages.</summary>
+        </member>
+        <member name="P:Etch.Text.Atlas.GlyphAtlas.WasExhausted">
+            <summary>
+            True when, since the last <see cref="M:Etch.Text.Atlas.GlyphAtlas.Reset"/>, an insert was refused
+            because the packer was full of other glyphs (recoverable). A glyph
+            refused only for being taller than a shelf does NOT set this — resetting
+            would not make room for it. The presenter checks this between frames and
+            resets, so a churn-exhausted atlas recovers on the next frame instead of
+            silently dropping glyphs forever (WP-3509).
+            </summary>
+        </member>
+        <member name="P:Etch.Text.Atlas.GlyphAtlas.Generation">
+            <summary>
+            Increments on every <see cref="M:Etch.Text.Atlas.GlyphAtlas.Reset"/>. Lets tests observe that a reset
+            actually happened; not otherwise needed for correctness because glyph
+            instances are rebuilt from draw commands every frame.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Atlas.GlyphAtlas.Reset">
+            <summary>
+            Clears every page's cache and shelf packer (textures retained), bumps
+            <see cref="P:Etch.Text.Atlas.GlyphAtlas.Generation"/>, and clears <see cref="P:Etch.Text.Atlas.GlyphAtlas.WasExhausted"/>. Must be
+            called between frames — never mid-build — so a frame's atlas uploads
+            stay coherent. Resets all pages together: a partial reset would leave
+            the multi-page lookup inconsistent, and after a reset every visible
+            glyph re-rasterizes into whichever page now has room.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.Atlas.GlyphAtlasPage">
+            <summary>
+            A single page of the multi-page glyph atlas.
+            Wraps one texture + one <see cref="T:Etch.Text.Atlas.LruCache"/>.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Atlas.ShelfPack.IsTallerThanShelf(System.Int32)">
+            <summary>
+            True when a glyph of height <paramref name="h"/> can never be placed
+            because, padded, it exceeds the shelf row height. Mirrors the height
+            check in <see cref="M:Etch.Text.Atlas.ShelfPack.Allocate(System.Int32,System.Int32,System.Int32@,System.Int32@)"/>.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Atlas.LruCache.Reset">
+            <summary>
+            Clears every cached glyph and resets the shelf packer to empty. The
+            backing texture is left untouched — its stale pixels are overwritten as
+            glyphs re-rasterize, and the 1px shelf padding prevents any sampling
+            bleed in the meantime. Used for the generation reset (WP-3509) when the
+            packer exhausts: cheap, and safe because glyph instances are rebuilt
+            from draw commands every frame, so no UV outlives the reset.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Atlas.LruCache.IsTallerThanShelf(System.Int32)">
+            <summary>
+            True when a glyph of this height can never fit a shelf (taller than the
+            packer's row height, padding included), so a <see cref="M:Etch.Text.Atlas.LruCache.Reset"/> would
+            not help. Distinguishes recoverable packer exhaustion from a glyph that
+            is fundamentally too large for the atlas geometry.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.FontHinting">
+            <summary>
+            Controls how aggressively a font is hinted during rasterization.
+            This affects the trade-off between sharpness (snapping to pixel grid)
+            and fidelity (preserving designed glyph shapes).
+            </summary>
+        </member>
+        <member name="F:Etch.Text.FontHinting.None">
+            <summary>
+            No hinting. Glyphs are rendered exactly as designed, which produces
+            the most faithful shapes but can look blurry at small sizes.
+            Equivalent to FT_LOAD_NO_HINTING.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.FontHinting.Slight">
+            <summary>
+            Light hinting (Apple-style). Only subtle vertical snapping to improve
+            consistency without distorting glyph shapes. Preferred for high-DPI
+            displays and small text where full hinting looks too aggressive.
+            Equivalent to FT_LOAD_TARGET_LIGHT.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.FontHinting.Normal">
+            <summary>
+            Normal hinting (default). FreeType's autohinter snaps edges to the
+            pixel grid for sharper text at the cost of some shape distortion.
+            Equivalent to FT_LOAD_DEFAULT.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.FontHinting.Full">
+            <summary>
+            Full hinting (Windows-style). Uses the font's embedded bytecode
+            instructions for maximum grid-fitting. Can look very sharp but may
+            significantly distort shapes, especially at larger sizes.
+            Equivalent to FT_LOAD_TARGET_NORMAL with bytecode interpreter.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Outline.GlyphOutlineBuilder.IsCompositeGlyph(Etch.Text.Shape.FontFace,System.UInt16)">
+            <summary>
+            Returns true if the glyph is a composite glyph (uses other glyphs as components).
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Outline.GlyphOutlineBuilder.TryGetCachedPalette(Etch.Text.Shape.FontFace,Etch.Text.Outline.GlyphColorValue[]@)">
+            <summary>
+            Parses the CPAL table once per font face and caches the result.
+            Returns false if the font has no CPAL table or the palette is malformed.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Outline.GlyphOutlineBuilder.HasColorLayers(Etch.Text.Shape.FontFace,System.UInt16)">
+            <summary>
+            Returns true if the font has a COLR table and the glyph has color layers.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Outline.GlyphOutlineBuilder.TryGetColorLayers(Etch.Text.Shape.FontFace,System.UInt16,Etch.Text.Outline.ColorLayer[]@,Etch.Text.Outline.GlyphColorValue[]@)">
+            <summary>
+            Parses the COLR table for the glyph and returns the cached CPAL palette.
+            CPAL is parsed once per font face and reused; COLR is parsed per-glyph.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.Outline.ColorLayer">
+            <summary>
+            A single layer in a COLR color glyph: a glyph ID and a palette index.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Outline.ColorLayer.#ctor(System.UInt16,System.UInt16)">
+            <summary>
+            A single layer in a COLR color glyph: a glyph ID and a palette index.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.Outline.GlyphColorValue">
+            <summary>
+            Simple RGBA color value for CPAL palette entries.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Outline.GlyphColorValue.#ctor(System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Simple RGBA color value for CPAL palette entries.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.SubpixelQuant">
+            <summary>
+            Quantizes a fractional pixel X offset to a small finite set of subpixel
+            positions. This bounds the glyph-cache key space while preserving smooth
+            horizontal spacing.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.QuantizedSubpixel.QuantizeX(System.Single,Etch.Text.SubpixelQuant)">
+            <summary>
+            Returns the quantized subpixel bucket for <paramref name="x"/>.
+            For <see cref="F:Etch.Text.SubpixelQuant.Quarter"/> the result is 0..3;
+            for <see cref="F:Etch.Text.SubpixelQuant.Eighth"/> it is 0..7.
+            Negative values wrap correctly (e.g. –0.3 → same bucket as 0.7).
+            </summary>
+        </member>
+        <member name="M:Etch.Text.QuantizedSubpixel.Dequantize(System.Byte,Etch.Text.SubpixelQuant)">
+            <summary>
+            Converts a quantized bucket back to a pixel offset.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Rasterize.GlyphRasterizer.RasterizeColorGlyph(Etch.Text.Shape.FontFace,System.UInt16,System.Span{System.Byte},System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Renders a COLR color glyph to an RGBA buffer.
+            Returns true if the glyph was successfully rendered as a color glyph.
+            Uses FreeType for measurement and rendering when available to ensure
+            correct results for composite glyphs and consistent coordinate systems.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Shape.FontFace.GetSubpixelVariant">
+            <summary>
+            Returns a cached FontFace with 3× horizontal scale for subpixel rendering.
+            Shares the immutable Face/Blob. Do not dispose the returned instance —
+            it is owned by this FontFace and disposed along with it.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.Shape.ShapingCache">
+            <summary>
+            LRU cache for shaped text runs.
+            Keyed by the full shaping signature (text hash, face id, size, BiDi level, script tag).
+            On cache hit the original text is re-compared to guard against hash collisions.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Shape.ShapingCache.TryShape(Etch.Text.Shape.ShapeRequest,Etch.Text.Shape.ShapedRun@)">
+            <summary>
+            Attempt to retrieve a cached <see cref="T:Etch.Text.Shape.ShapedRun"/> for <paramref name="request"/>.
+            On miss, shapes via <see cref="M:Etch.Text.Shape.Shaper.Shape(Etch.Text.Shape.ShapeRequest)"/> and inserts the result.
+            </summary>
+        </member>
+        <member name="P:Etch.Text.Shape.ShapingCache.Count">
+            <summary>Current number of cached entries.</summary>
+        </member>
+        <member name="P:Etch.Text.Shape.ShapingCache.Capacity">
+            <summary>Maximum number of entries before LRU eviction.</summary>
+        </member>
+        <member name="T:Etch.Text.Shape.ShapingKey">
+            <summary>
+            Immutable key for the shaping cache.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.SubpixelOrientation">
+            <summary>
+            LCD subpixel orientation for a text rendering surface.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.SubpixelOrientation.Grayscale">
+            <summary>
+            Standard grayscale anti-aliasing (default).
+            </summary>
+        </member>
+        <member name="F:Etch.Text.SubpixelOrientation.RgbHorizontal">
+            <summary>
+            Horizontal RGB stripe order (standard Windows LCD).
+            </summary>
+        </member>
+        <member name="T:Etch.Text.SurfaceInfo">
+            <summary>
+            Surface configuration for text rendering.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.SurfaceInfo.SubpixelOrientation">
+            <summary>
+            Subpixel orientation for this surface. Defaults to <see cref="F:Etch.Text.SubpixelOrientation.Grayscale"/>.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.SurfaceInfo.ShouldUseSubpixel(Etch.Geometry.Affine)">
+            <summary>
+            Returns true if the given transform is axis-aligned (no rotation or skew)
+            and the surface is configured for subpixel rendering.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.Minimal.BidiAlgorithm">
+            <summary>
+            Minimal but correct implementation of the Unicode Bidirectional Algorithm
+            (UAX #9). Covers Latin, Arabic, and Hebrew. Uses stackalloc for
+            paragraphs ≤ 256 chars; ArrayPool fallback above.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Unicode.Minimal.BidiAlgorithm.Analyze(System.ReadOnlySpan{System.Char},System.SByte)">
+            <summary>
+            Analyse a single paragraph and return visual-order runs.
+            </summary>
+            <param name="text">Paragraph text.</param>
+            <param name="paragraphLevel">0 = LTR, 1 = RTL, -1 = auto-detect.</param>
+        </member>
+        <member name="M:Etch.Text.Unicode.Minimal.BidiAlgorithm.ResolveBracketPairs(System.ReadOnlySpan{System.Char},System.Span{Etch.Text.Unicode.Minimal.BidiClass},System.ReadOnlySpan{System.SByte})">
+            <summary>
+            N0: resolve the direction of paired brackets so that e.g. parentheses in an
+            opposite-direction context adopt the surrounding direction. BD16 pairs
+            brackets with a bounded stack; N0 then sets each pair from the strong types
+            it encloses (numbers counting as R) and the preceding context.
+            </summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.Minimal.BidiClass">
+            <summary>
+            Unicode Bidi_Class property values per UAX #9.
+            Only values needed for the core algorithm are included.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.L">
+            <summary>Left-to-Right — strong LTR (Latin, CJK, etc.)</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.R">
+            <summary>Right-to-Left — strong RTL (Hebrew, etc.)</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.AL">
+            <summary>Arabic Letter — strong RTL (Arabic, Syriac, etc.)</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.EN">
+            <summary>European Number — weak EN</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.ES">
+            <summary>European Number Separator — weak ES</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.ET">
+            <summary>European Number Terminator — weak ET</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.AN">
+            <summary>Arabic Number — weak AN</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.CS">
+            <summary>Common Number Separator — weak CS</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.NSM">
+            <summary>Nonspacing Mark — weak NSM</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.BN">
+            <summary>Boundary Neutral — weak BN</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.B">
+            <summary>Paragraph Separator — neutral B</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.S">
+            <summary>Segment Separator — neutral S</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.WS">
+            <summary>Whitespace — neutral WS</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.ON">
+            <summary>Other Neutral — neutral ON</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.LRE">
+            <summary>Left-to-Right Embedding — explicit LRE</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.LRO">
+            <summary>Left-to-Right Override — explicit LRO</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.RLE">
+            <summary>Right-to-Left Embedding — explicit RLE</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.RLO">
+            <summary>Right-to-Left Override — explicit RLO</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.PDF">
+            <summary>Pop Directional Format — explicit PDF</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.LRI">
+            <summary>Left-to-Right Isolate — explicit LRI</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.RLI">
+            <summary>Right-to-Left Isolate — explicit RLI</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.FSI">
+            <summary>First Strong Isolate — explicit FSI</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiClass.PDI">
+            <summary>Pop Directional Isolate — explicit PDI</summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.Minimal.BidiClassTable">
+            <summary>
+            Lookup table for Bidi_Class. Covers ASCII, Hebrew, Arabic, and common
+            punctuation. Unknown code points default to ON (safe neutral fallback).
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Unicode.Minimal.BidiClassTable.Get(System.Char)">
+            <summary>Return the Bidi_Class for a Unicode code point.</summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.Minimal.BidiRunDirection">
+            <summary>
+            The resolved direction of a BiDi run.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiRunDirection.Ltr">
+            <summary>Left-to-right (even embedding level).</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.Minimal.BidiRunDirection.Rtl">
+            <summary>Right-to-left (odd embedding level).</summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.Minimal.BidiRun">
+            <summary>
+            A single run of text with uniform direction.
+            </summary>
+        </member>
+        <member name="P:Etch.Text.Unicode.Minimal.BidiRun.Start">
+            <summary>Start index in the original string (inclusive).</summary>
+        </member>
+        <member name="P:Etch.Text.Unicode.Minimal.BidiRun.Length">
+            <summary>Length in characters.</summary>
+        </member>
+        <member name="P:Etch.Text.Unicode.Minimal.BidiRun.Level">
+            <summary>Embedding level (even = LTR, odd = RTL).</summary>
+        </member>
+        <member name="P:Etch.Text.Unicode.Minimal.BidiRun.Direction">
+            <summary>Resolved direction derived from level parity.</summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.Minimal.BidiParagraphResult">
+            <summary>
+            Result of BiDi analysis on a paragraph.
+            </summary>
+        </member>
+        <member name="P:Etch.Text.Unicode.Minimal.BidiParagraphResult.ParagraphLevel">
+            <summary>Resolved paragraph embedding level (0 = LTR, 1 = RTL).</summary>
+        </member>
+        <member name="P:Etch.Text.Unicode.Minimal.BidiParagraphResult.Runs">
+            <summary>Visual-order runs, left-to-right in display order.</summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.LineBreakKind">
+            <summary>
+            The kind of line break returned by <see cref="T:Etch.Text.Unicode.LineBreakIterator"/>.
+            </summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.LineBreakKind.Soft">
+            <summary>A soft break — text may wrap here.</summary>
+        </member>
+        <member name="F:Etch.Text.Unicode.LineBreakKind.Hard">
+            <summary>A hard break — forced line ending (\n, \r\n, LS, PS).</summary>
+        </member>
+        <member name="T:Etch.Text.Unicode.LineBreakIterator">
+            <summary>
+            Streaming, zero-allocation-per-iteration line-break enumerator.
+            Wraps ICU4N <see cref="M:ICU4N.Text.BreakIterator.GetLineInstance(System.Globalization.CultureInfo)"/> with per-locale,
+            thread-local instance caching.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Unicode.LineBreakIterator.#ctor(System.ReadOnlySpan{System.Char},System.String)">
+            <summary>
+            Create an iterator over <paramref name="text"/>.
+            </summary>
+            <param name="text">Text to scan for line-break opportunities.</param>
+            <param name="locale">BCP-47 locale tag (e.g. "en", "ja").</param>
+        </member>
+        <member name="M:Etch.Text.Unicode.LineBreakIterator.MoveNext(System.Int32@,Etch.Text.Unicode.LineBreakKind@)">
+            <summary>
+            Advance to the next break boundary.
+            </summary>
+            <param name="index">Character index of the boundary (0..Length).</param>
+            <param name="kind">Soft or hard break.</param>
+            <returns><c>true</c> if a boundary was found; <c>false</c> when exhausted.</returns>
+        </member>
+        <member name="T:Etch.Text.Unicode.UnicodeData">
+            <summary>
+            Process-global ICU4N initialisation and health checks.
+            Call <see cref="M:Etch.Text.Unicode.UnicodeData.Ensure"/> once before using any ICU4N-dependent API
+            (line-breaking, BiDi, etc.).
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Unicode.UnicodeData.Ensure">
+            <summary>
+            Verifies that ICU4N data is loaded and functional.
+            Panics with <see cref="F:Etch.PanicCodes.IcuDataMissing"/> if not.
+            Safe to call from multiple threads; idempotent.
+            </summary>
+        </member>
+        <member name="M:Etch.Text.Unicode.UnicodeData.GetParagraphRuns(System.ReadOnlySpan{System.Char},System.SByte)">
+            <summary>
+            Analyse a single paragraph and return visual-order BiDi runs.
+            Uses our own UAX #9 implementation because ICU4N does not expose
+            a public BiDi class.
+            </summary>
+            <param name="text">Paragraph text.</param>
+            <param name="paragraphLevel">0 = LTR, 1 = RTL, -1 = auto-detect.</param>
+        </member>
+    </members>
+</doc>

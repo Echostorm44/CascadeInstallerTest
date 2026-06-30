@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Scene</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Scene.SceneBuffer">
+            <summary>
+            An immutable, compact encoding of a vector-graphics scene. Built by
+            <see cref="T:Etch.Scene.SceneBuilder"/> and consumed by the CPU/GPU renderers.
+            </summary>
+        </member>
+        <member name="P:Etch.Scene.SceneBuffer.Commands">
+            <summary>All scene commands, in execution order.</summary>
+        </member>
+        <member name="P:Etch.Scene.SceneBuffer.CommandCount">
+            <summary>Number of commands in the scene.</summary>
+        </member>
+        <member name="T:Etch.Scene.SceneBuilder">
+            <summary>
+            A ref-struct builder for constructing <see cref="T:Etch.Scene.SceneBuffer"/> instances.
+            Uses <see cref="T:System.Buffers.ArrayPool`1"/> internally for zero-allocation
+            warm paths. Must be disposed after <see cref="M:Etch.Scene.SceneBuilder.End"/> or on error.
+            </summary>
+        </member>
+        <member name="M:Etch.Scene.SceneBuilder.Begin(System.Int32)">
+            <summary>Starts a new scene builder with the given command capacity.</summary>
+        </member>
+    </members>
+</doc>

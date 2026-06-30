@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Analyzers</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Analyzers.NoInterpolatedLogAnalyzer">
+            <summary>
+            ET0106 — forbids passing an interpolated string (<c>$"..."</c>) as the
+            <c>template</c> argument to any <c>IEtchLogger.Log</c> overload, or to any
+            extension method on <c>IEtchLogger</c> that accepts a string-like handler.
+            Structured logging's zero-allocation guarantee depends on passing a literal
+            template plus a <c>stackalloc</c>ed KVP span; interpolated strings allocate
+            on every call and defeat that contract.
+            </summary>
+            <remarks>
+            <para>
+            <b>Scope.</b> Only syntax trees whose file path contains a <c>/src/</c> segment,
+            excluding <c>/src-gen/</c>, <c>/tests/</c>, <c>/tools/</c>. Applies only to
+            assemblies whose name begins with <c>Etch.</c> and is not a test assembly.
+            </para>
+            <para>
+            <b>Detection.</b> Roslyn marks an <c>$"..."</c> literal as
+            <c>InterpolatedStringExpressionSyntax</c>. We scan <c>InvocationExpressionSyntax</c>
+            nodes whose called method is named <c>Log</c> and inspect the <c>template</c>
+            positional or named argument for that type.
+            </para>
+            </remarks>
+        </member>
+        <member name="T:Etch.Analyzers.NoRawThrowAnalyzer">
+            <summary>
+            ET0108 — forbids raw <c>throw new &lt;Exception-derived&gt;(...)</c> inside the Etch
+            production assemblies (<c>Etch.*</c> under <c>src/</c>). D-006 mandates that every
+            internal failure path funnels through <c>Panic.Invariant</c> / <c>Panic.ArgumentNull</c>
+            / etc., which in turn construct <c>EtchException</c> with a stable <c>ET-P-####</c>
+            panic code. Raw throws slip past that contract and produce incident reports with no
+            machine-readable code, so the rule is an error, not a warning.
+            </summary>
+            <remarks>
+            <para><b>Scope.</b> Only syntax trees whose file path contains a <c>/src/</c> (or
+            <c>\src\</c>) segment. Files under <c>/src-gen/</c>, <c>/tests/</c>, and <c>/tools/</c>
+            are exempt: generators produce wrapper code, tests exercise the real BCL, and tooling
+            lives outside the production contract.</para>
+            <para><b>Allow-listed throw targets.</b></para>
+            <list type="bullet">
+            <item><description><c>EtchException</c> itself — the <c>Panic</c> helpers construct it directly.</description></item>
+            <item><description><c>OperationCanceledException</c> — cooperative cancellation signal; framework convention.</description></item>
+            <item><description><c>ObjectDisposedException</c> — framework convention for post-dispose use.</description></item>
+            </list>
+            </remarks>
+        </member>
+        <member name="T:Etch.Analyzers.PublicMustHaveDocsAnalyzer">
+            <summary>
+            ET1501 — every public API in a shipping assembly must have an XML documentation comment.
+            </summary>
+        </member>
+    </members>
+</doc>

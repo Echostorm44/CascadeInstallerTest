@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Gpu</name>
+    </assembly>
+    <members>
+        <member name="F:Etch.Gpu.Diagnostics.AdapterInfo.MaxEncodedSize">
+            <summary>
+            Upper-bound envelope size for a freshly built adapter info. Caller-supplied
+            destination must be at least this large to avoid truncation.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Diagnostics.AdapterInfo.Encode(System.Span{System.Byte})">
+            <summary>
+            Encodes this adapter info into a little-endian byte blob. Returns the number of
+            bytes written. Strings that exceed their budget are truncated at a UTF-8 boundary
+            (never in the middle of a code point).
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Diagnostics.CrashDump.ResolveDirectory">
+            <summary>
+            Resolves the directory into which crash dumps should be written. The env var
+            takes precedence; otherwise falls back to <c>Path.GetTempPath()/etch</c>. The
+            returned directory is created if missing (best-effort).
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Diagnostics.CrashDump.BuildFileName(System.String)">
+            <summary>
+            Builds the canonical crash-dump filename for the current process using the supplied
+            UTC timestamp string (typically formatted <c>yyyyMMddHHmmssfff</c>). The timestamp
+            is supplied by the caller rather than read from <c>DateTime.UtcNow</c> directly so
+            this type stays free of non-deterministic API calls (see ET0105).
+            Format: <c>crash-&lt;pid&gt;-&lt;utcStamp&gt;.etrp</c>.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Diagnostics.CrashDump.TryWrite(Etch.Abstractions.Diagnostics.ISceneReproducer,System.Int32,System.String,System.String)">
+            <summary>
+            Captures the supplied reproducer and writes the bytes to the resolved crash directory
+            under <c>crash-&lt;pid&gt;-&lt;utcStamp&gt;.etrp</c>. Returns the full path on success,
+            or <see langword="null"/> if the write failed (disk full, permissions, etc.). Never
+            throws — callers typically invoke from a top-level panic handler that must not observe
+            a secondary failure. When <paramref name="directoryOverride"/> is non-null the env
+            var / temp fallback is bypassed — useful for tests that need isolation from the
+            process-global environment.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Diagnostics.GpuSceneReproducer.CalculateUpperBound(System.Int32)">
+            <summary>
+            Upper-bound envelope size for a capture with the supplied scene-bytes budget.
+            Use when the caller needs to size an ArrayPool rental before calling CaptureTo.
+            </summary>
+        </member>
+        <member name="P:Etch.Gpu.Diagnostics.ValidationLogRing.TotalWrites">
+            <summary>
+            Total number of Push calls ever made. If this exceeds Capacity, entries have wrapped.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Diagnostics.ValidationLogRing.Push(Etch.Gpu.ErrorType,System.ReadOnlySpan{System.Byte},System.Int64)">
+            <summary>
+            Records one validation entry. Zero managed allocations on this path —
+            callers typically invoke from the wgpu-native callback thread. The
+            <paramref name="timestampTicks"/> argument is supplied by the caller
+            (typically <c>IFrameClock.NowNanos</c> or <c>Stopwatch.GetTimestamp</c>
+            routed through a determinism seam) so the ring itself stays free of
+            non-deterministic API calls.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Diagnostics.ValidationLogRing.Snapshot">
+             <summary>
+             Encodes the ring into a little-endian byte blob for inclusion in an .etrp section.
+             Entries are emitted in chronological order (oldest first). Not called on hot paths.
+            
+             Blob layout:
+               u32 Count            — number of entries actually present (min(TotalWrites, Capacity))
+               per entry:
+                 i64 TimestampTicks
+                 u32 ErrorType
+                 u16 MessageLength
+                 UTF-8 bytes (MessageLength)
+             </summary>
+        </member>
+        <member name="T:Etch.Gpu.Instance">
+            <summary>
+            A handle to a wgpu-native instance. This is the root of the GPU hierarchy;
+            create one at application startup and dispose at shutdown.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Instance.Create(System.Nullable{Etch.Gpu.Descriptors.InstanceDescriptor})">
+            <summary>Creates a new wgpu instance with optional capabilities.</summary>
+        </member>
+        <member name="T:Etch.Gpu.Device">
+            <summary>
+            A handle to a wgpu-native logical device. Created from an <see cref="T:Etch.Gpu.Adapter"/>;
+            owns the command queue and is the factory for buffers, textures, pipelines, etc.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Buffer.MapSync(Etch.Gpu.Device,Etch.Gpu.MapMode,System.UInt64,System.UInt64,System.Int32)">
+            <summary>
+            Synchronously maps the buffer, spinning on <see cref="M:Etch.Gpu.Device.Poll(System.Boolean)"/> until the
+            callback fires or the timeout elapses. Returns true on success.
+            </summary>
+        </member>
+        <member name="T:Etch.Gpu.Validation.ValidationBridge">
+            <summary>
+            Bridges wgpu-native validation messages into Etch's error infrastructure.
+            In v29 the uncaptured-error callback is set at device-creation time via
+            <see cref="F:Etch.Gpu.Descriptors.DeviceDescriptor.UncapturedErrorCallbackInfo"/>; there is no
+            separate <c>wgpuDeviceSetUncapturedErrorCallback</c> setter.
+            </summary>
+        </member>
+        <member name="P:Etch.Gpu.Validation.ValidationBridge.Ring">
+            <summary>
+            The ring that receives every uncaptured validation message. Thread-safe
+            for a single producer (wgpu callback thread) and any consumer.
+            </summary>
+        </member>
+        <member name="P:Etch.Gpu.Validation.ValidationBridge.TotalDelivered">
+            <summary>
+            Total number of uncaptured errors that have been delivered to the ring.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Validation.ValidationBridge.AcknowledgeAll">
+            <summary>
+            Advances the internal counter so that all current ring entries are
+            considered acknowledged. Use in test cleanup to avoid cross-test
+            interference on the shared <see cref="P:Etch.Gpu.Validation.ValidationBridge.Ring"/>.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Validation.ValidationBridge.SetLogger(Etch.IEtchLogger)">
+            <summary>
+            Attaches the logger used in Release builds. Debug builds panic instead.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Validation.ValidationBridge.ConfigureDeviceDescriptor(Etch.Gpu.Descriptors.DeviceDescriptor*)">
+            <summary>
+            Fills <paramref name="descriptor"/> so that it routes uncaptured errors
+            through <see cref="M:Etch.Gpu.Validation.ValidationBridge.EtchValidationCallback(System.Void*,System.UInt32,System.Void*,System.Void*,System.Void*)"/>.
+            Call this before passing the descriptor to <c>wgpuAdapterRequestDevice</c>.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Validation.ValidationBridge.ThrowIfValidationErrorsPresent(System.String)">
+            <summary>
+            Throws <see cref="T:Etch.EtchException"/> with code <c>ET-P-0201 GpuValidation</c>
+            if the ring contains any entries written since the last call to this method.
+            Returns the number of new errors found (zero on success).
+            </summary>
+            <remarks>
+            Use this after <c>Queue.Submit</c> in strict-validation mode (tests).
+            </remarks>
+        </member>
+    </members>
+</doc>
