@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Gpu.Compositor</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Gpu.Compositor.GpuCompositor">
+            <summary>
+            End-to-end GPU compositor for Etch scenes using the strip-coverage pipeline.
+            Orchestrates: classify → strip emit → upload → render → readback.
+            </summary>
+        </member>
+        <member name="M:Etch.Gpu.Compositor.GpuCompositor.RecordRenderPass(Etch.Gpu.RenderPass,Etch.Scene.SceneBuffer,System.Int32,System.Int32)">
+            <summary>
+            Records the strip-coverage geometry pass into an existing <paramref name="pass"/>.
+            Caches GPU buffers by scene reference so static scenes skip classify/emit/upload.
+            </summary>
+        </member>
+    </members>
+</doc>

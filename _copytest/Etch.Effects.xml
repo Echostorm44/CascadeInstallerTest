@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Effects</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Effects.Image.ImageSource">
+            <summary>
+            A decoded image with raw pixel data in a known format. Created via
+            <see cref="M:Etch.Effects.Image.ImageSource.Decode(System.ReadOnlySpan{System.Byte},Etch.Effects.Image.ImageDecodeOptions)"/> or
+            <see cref="M:Etch.Effects.Image.ImageSource.DecodeStreaming(System.IO.Stream,Etch.Effects.Image.ImageDecodeOptions)"/>.
+            </summary>
+        </member>
+        <member name="P:Etch.Effects.Image.ImageSource.Width">
+            <summary>Width in pixels.</summary>
+        </member>
+        <member name="P:Etch.Effects.Image.ImageSource.Height">
+            <summary>Height in pixels.</summary>
+        </member>
+        <member name="P:Etch.Effects.Image.ImageSource.Format">
+            <summary>Pixel format (e.g. RGBA8, BGRA8).</summary>
+        </member>
+        <member name="M:Etch.Effects.Image.ImageSource.Decode(System.ReadOnlySpan{System.Byte},Etch.Effects.Image.ImageDecodeOptions)">
+            <summary>Decodes an image from a byte buffer (PNG, JPEG, etc.).</summary>
+        </member>
+    </members>
+</doc>

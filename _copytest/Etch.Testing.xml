@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Testing</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Testing.FlakyTestAttribute">
+            <summary>
+            Marks a test as flaky so that it is excluded from the main CI gate
+            and routed to the dedicated flaky-watch lane instead.
+            </summary>
+            <remarks>
+            A flaky test must also carry <c>[Category("Flaky")]</c> so that
+            TUnit's filter pipeline routes it correctly; this attribute adds
+            metadata (quarantine date, tracking issue) consumed by the
+            flake detector.
+            </remarks>
+        </member>
+        <member name="P:Etch.Testing.FlakyTestAttribute.QuarantinedSince">
+            <summary>
+            The date (ISO-8601) when the test was quarantined. Used by the
+            flake detector to enforce the 7-day fix deadline.
+            </summary>
+        </member>
+        <member name="P:Etch.Testing.FlakyTestAttribute.TrackingIssue">
+            <summary>
+            Optional tracking issue URL or ID for the root-cause fix.
+            </summary>
+        </member>
+        <member name="M:Etch.Testing.MemoryReporters.GpuMemoryReporter.EstimateCacheMemory(System.Int32,System.Int32)">
+            <summary>
+            Estimates GPU memory used by the render cache for a given scene size.
+            Returns the approximate bytes allocated for textures, buffers, and pipelines.
+            Returns 0 if GPU is unavailable.
+            </summary>
+        </member>
+        <member name="M:Etch.Testing.SceneCpuRenderer.RasterizeSector(Etch.Raster.Cpu.Framebuffer,Etch.Scene.FillSectorPayload@,Etch.Geometry.Affine,System.UInt32,Etch.Raster.Cpu.ClipMask)">
+            <summary>
+            Rasterizes a filled annular sector (pie/donut slice) directly into the
+            framebuffer. The strip pipeline has no sector primitive, so without this
+            FillSector commands render nothing on the CPU fallback (WP-3514). Angle
+            convention matches the GPU sector instance: point = center + r·(cos θ, sin θ)
+            with screen-Y down.
+            </summary>
+        </member>
+        <member name="T:Etch.Testing.SceneCpuRenderer.CpuRenderCache">
+            <summary>
+            Reusable CPU render context that pre-computes tile/strip/mask data during
+            construction so that <see cref="M:Etch.Testing.SceneCpuRenderer.CpuRenderCache.Render"/> is allocation-free.
+            Create once for a given scene and output size, then call <see cref="M:Etch.Testing.SceneCpuRenderer.CpuRenderCache.Render"/> repeatedly.
+            </summary>
+        </member>
+        <member name="P:Etch.Testing.SceneRunner.IsSoftwareGpu">
+            <summary>
+            True when <c>ETCH_SOFTWARE_GPU=1</c> is set in the environment.
+            GPU rendering paths should skip hardware-only validation checks
+            (e.g. timestamp queries) when this flag is set.
+            </summary>
+        </member>
+    </members>
+</doc>

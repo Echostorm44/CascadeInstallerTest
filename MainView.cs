@@ -19,71 +19,74 @@ internal sealed class MainView : Component
 
     protected override async Task OnMounted()
     {
-        // We reached a first frame — defuse crash-detection for this launch.
-        Updater.MarkHealthy();
-        await CheckAndDownloadAsync();
+        Log($"OnMounted: entry (thread={Environment.CurrentManagedThreadId})");
+        try
+        {
+            // We reached a first frame — defuse crash-detection for this launch.
+            Updater.MarkHealthy();
+            Log("OnMounted: marked healthy, starting check");
+            await CheckAndDownloadAsync();
+            Log("OnMounted: returned");
+        }
+        catch (Exception ex)
+        {
+            Log($"OnMounted: EXCEPTION {ex.GetType().Name}: {ex.Message}");
+        }
     }
 
     private async Task CheckAndDownloadAsync()
     {
-        // NOTE: the framework awaits OnMounted with ConfigureAwait(false), so continuations after
-        // an await run off the UI thread, where Invalidate() is not safe. UI state is therefore
-        // published through SetStatus / Dispatcher.Post. (Framework DX gap — see INSTALL-001 notes.)
+        // The framework installs a UI SynchronizationContext, so continuations after each await
+        // resume on the UI thread — plain field mutation + Invalidate() is all that is needed.
         try
         {
-            SetStatus("Checking for updates…");
+            status = "Checking for updates…";
+            Invalidate();
+            Log("check: starting");
 
             UpdateCheckResult result = await Updater.CheckNowAsync(LifetimeToken);
+            Log($"check: returned available={result.IsAvailable} version={result.Version} isDelta={result.IsDelta} reason={result.Reason}");
             if (!result.IsAvailable)
             {
-                SetStatus("You are on the latest version.");
+                status = "You are on the latest version.";
+                Invalidate();
                 Log($"check: up to date at {version}");
                 return;
             }
 
-            SetStatus($"Downloading {result.Version} ({(result.IsDelta ? "delta" : "full package")})…");
-            await Updater.DownloadAsync(LifetimeToken);
+            status = $"Downloading {result.Version} ({(result.IsDelta ? "delta" : "full package")})…";
+            Invalidate();
+            Log("download: starting");
 
-            Dispatcher.Post(() =>
-            {
-                updateReady = true;
-                status = $"Update {result.Version} ready. Restart to apply.";
-                Invalidate();
-            });
+            await Updater.DownloadAsync(LifetimeToken);
+            Log($"download: returned state={Updater.State} staged={Updater.HasStagedUpdate} viaDelta={Updater.StagedViaDelta}");
+
+            updateReady = true;
+            status = $"Update {result.Version} ready. Restart to apply.";
+            Invalidate();
             Log($"staged {result.Version} via {(Updater.StagedViaDelta ? "delta" : "full")} (running {version})");
         }
         catch (Exception ex)
         {
-            SetStatus($"Update check failed: {ex.Message}");
-            Log($"error: {ex.Message}");
-        }
-    }
-
-    private void SetStatus(string text)
-    {
-        status = text;
-        if (Dispatcher.IsOnUiThread)
-        {
+            status = $"Update check failed: {ex.Message}";
             Invalidate();
-        }
-        else
-        {
-            Dispatcher.Post(Invalidate);
+            Log($"error: {ex.GetType().Name}: {ex.Message}");
         }
     }
 
-    private void Log(string line)
+    internal static void Log(string line)
     {
         try
         {
             string dir = System.IO.Path.GetDirectoryName(Environment.ProcessPath) ?? AppContext.BaseDirectory;
             System.IO.File.AppendAllText(
                 System.IO.Path.Combine(dir, "update-log.txt"),
-                $"{DateTimeOffset.Now:s}  {line}{Environment.NewLine}");
+                $"{DateTimeOffset.Now:HH:mm:ss.fff}  {line}{Environment.NewLine}");
         }
-        catch (System.IO.IOException)
+        catch (Exception)
         {
         }
+        Console.Error.WriteLine($"[update] {line}");
     }
 
     protected override Node Render() =>

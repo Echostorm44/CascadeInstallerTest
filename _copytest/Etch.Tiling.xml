@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Tiling</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Tiling.Strips.StrokeContourBuilder">
+            <summary>
+            Generates closed stroke-outline polygons from flattened subpaths.
+            Produces bevel joins at shared vertices and square caps at open ends.
+            </summary>
+        </member>
+    </members>
+</doc>

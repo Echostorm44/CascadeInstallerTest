@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Shaders</name>
+    </assembly>
+    <members>
+        <member name="P:Etch.Shaders.ShaderResources.nonseparable">
+            <summary>Source: shaders\blend\nonseparable.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.separable">
+            <summary>Source: shaders\blend\separable.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.down">
+            <summary>Source: shaders\blur\down.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.up">
+            <summary>Source: shaders\blur\up.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.duplicate_binding">
+            <summary>Source: shaders\duplicate_binding.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.gradient">
+            <summary>Source: shaders\gradients\gradient.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.image_sample">
+            <summary>Source: shaders\image\image_sample.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.noise">
+            <summary>Source: shaders\noise.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.no_vertex_entry">
+            <summary>Source: shaders\no_vertex_entry.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.test">
+            <summary>Source: shaders\sentinel\test.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.solid_fill">
+            <summary>Source: shaders\solid_fill.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.strip_coverage">
+            <summary>Source: shaders\strip_coverage.wgsl</summary>
+        </member>
+        <member name="P:Etch.Shaders.ShaderResources.glyph_atlas">
+            <summary>Source: shaders\text\glyph_atlas.wgsl</summary>
+        </member>
+    </members>
+</doc>

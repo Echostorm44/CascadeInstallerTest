@@ -1,0 +1,1261 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0/win-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {},
+    ".NETCoreApp,Version=v10.0/win-x64": {
+      "CascadeInstallerTest/7.0.0": {
+        "dependencies": {
+          "Cascade.UI": "7.0.0",
+          "Cascade.UI.Installer": "7.0.0",
+          "Etch.Abstractions": "7.0.0.0"
+        },
+        "runtime": {
+          "CascadeInstallerTest.dll": {}
+        }
+      },
+      "Echostorm.SharpImage/1.0.3": {
+        "runtime": {
+          "lib/net10.0/SharpImage.dll": {
+            "assemblyVersion": "1.0.3.0",
+            "fileVersion": "1.0.3.0"
+          }
+        }
+      },
+      "FreeTypeSharp/1.1.3": {
+        "runtime": {
+          "lib/netstandard2.0/FreeTypeSharp.dll": {
+            "assemblyVersion": "1.1.3.0",
+            "fileVersion": "1.1.3.0"
+          }
+        },
+        "native": {
+          "runtimes/win-x64/native/freetype.dll": {
+            "fileVersion": "2.10.1.0"
+          }
+        }
+      },
+      "HarfBuzzSharp/8.3.1.3": {
+        "dependencies": {
+          "HarfBuzzSharp.NativeAssets.Win32": "8.3.1.3"
+        },
+        "runtime": {
+          "lib/net8.0/HarfBuzzSharp.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "8.3.1.3"
+          }
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.Win32/8.3.1.3": {
+        "native": {
+          "runtimes/win-x64/native/libHarfBuzzSharp.dll": {
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libHarfBuzzSharp.pdb": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "ICU4N/60.1.0-alpha.439": {
+        "dependencies": {
+          "ICU4N.Resources": "60.1.0-alpha.439",
+          "J2N": "2.2.0-alpha-0021",
+          "Microsoft.Extensions.Caching.Memory": "6.0.2"
+        },
+        "runtime": {
+          "lib/net9.0/ICU4N.dll": {
+            "assemblyVersion": "60.0.0.0",
+            "fileVersion": "60.1.0.0"
+          }
+        }
+      },
+      "ICU4N.Resources/60.1.0-alpha.439": {
+        "runtime": {
+          "lib/netstandard2.0/ICU4N.resources.dll": {
+            "assemblyVersion": "60.0.0.0",
+            "fileVersion": "60.1.0.0"
+          }
+        },
+        "resources": {
+          "lib/netstandard2.0/af/ICU4N.resources.dll": {
+            "locale": "af"
+          },
+          "lib/netstandard2.0/agq/ICU4N.resources.dll": {
+            "locale": "agq"
+          },
+          "lib/netstandard2.0/ak/ICU4N.resources.dll": {
+            "locale": "ak"
+          },
+          "lib/netstandard2.0/am/ICU4N.resources.dll": {
+            "locale": "am"
+          },
+          "lib/netstandard2.0/ar/ICU4N.resources.dll": {
+            "locale": "ar"
+          },
+          "lib/netstandard2.0/ars/ICU4N.resources.dll": {
+            "locale": "ars"
+          },
+          "lib/netstandard2.0/as/ICU4N.resources.dll": {
+            "locale": "as"
+          },
+          "lib/netstandard2.0/asa/ICU4N.resources.dll": {
+            "locale": "asa"
+          },
+          "lib/netstandard2.0/ast/ICU4N.resources.dll": {
+            "locale": "ast"
+          },
+          "lib/netstandard2.0/az-Cyrl/ICU4N.resources.dll": {
+            "locale": "az-Cyrl"
+          },
+          "lib/netstandard2.0/az-Latn/ICU4N.resources.dll": {
+            "locale": "az-Latn"
+          },
+          "lib/netstandard2.0/az/ICU4N.resources.dll": {
+            "locale": "az"
+          },
+          "lib/netstandard2.0/bas/ICU4N.resources.dll": {
+            "locale": "bas"
+          },
+          "lib/netstandard2.0/be/ICU4N.resources.dll": {
+            "locale": "be"
+          },
+          "lib/netstandard2.0/bem/ICU4N.resources.dll": {
+            "locale": "bem"
+          },
+          "lib/netstandard2.0/bez/ICU4N.resources.dll": {
+            "locale": "bez"
+          },
+          "lib/netstandard2.0/bg/ICU4N.resources.dll": {
+            "locale": "bg"
+          },
+          "lib/netstandard2.0/bm/ICU4N.resources.dll": {
+            "locale": "bm"
+          },
+          "lib/netstandard2.0/bn/ICU4N.resources.dll": {
+            "locale": "bn"
+          },
+          "lib/netstandard2.0/bo/ICU4N.resources.dll": {
+            "locale": "bo"
+          },
+          "lib/netstandard2.0/br/ICU4N.resources.dll": {
+            "locale": "br"
+          },
+          "lib/netstandard2.0/brx/ICU4N.resources.dll": {
+            "locale": "brx"
+          },
+          "lib/netstandard2.0/bs-Cyrl/ICU4N.resources.dll": {
+            "locale": "bs-Cyrl"
+          },
+          "lib/netstandard2.0/bs-Latn/ICU4N.resources.dll": {
+            "locale": "bs-Latn"
+          },
+          "lib/netstandard2.0/bs/ICU4N.resources.dll": {
+            "locale": "bs"
+          },
+          "lib/netstandard2.0/ca/ICU4N.resources.dll": {
+            "locale": "ca"
+          },
+          "lib/netstandard2.0/ccp/ICU4N.resources.dll": {
+            "locale": "ccp"
+          },
+          "lib/netstandard2.0/ce/ICU4N.resources.dll": {
+            "locale": "ce"
+          },
+          "lib/netstandard2.0/cgg/ICU4N.resources.dll": {
+            "locale": "cgg"
+          },
+          "lib/netstandard2.0/chr/ICU4N.resources.dll": {
+            "locale": "chr"
+          },
+          "lib/netstandard2.0/cs/ICU4N.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/netstandard2.0/cy/ICU4N.resources.dll": {
+            "locale": "cy"
+          },
+          "lib/netstandard2.0/da/ICU4N.resources.dll": {
+            "locale": "da"
+          },
+          "lib/netstandard2.0/dav/ICU4N.resources.dll": {
+            "locale": "dav"
+          },
+          "lib/netstandard2.0/de/ICU4N.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.0/dje/ICU4N.resources.dll": {
+            "locale": "dje"
+          },
+          "lib/netstandard2.0/dsb/ICU4N.resources.dll": {
+            "locale": "dsb"
+          },
+          "lib/netstandard2.0/dua/ICU4N.resources.dll": {
+            "locale": "dua"
+          },
+          "lib/netstandard2.0/dyo/ICU4N.resources.dll": {
+            "locale": "dyo"
+          },
+          "lib/netstandard2.0/dz/ICU4N.resources.dll": {
+            "locale": "dz"
+          },
+          "lib/netstandard2.0/ebu/ICU4N.resources.dll": {
+            "locale": "ebu"
+          },
+          "lib/netstandard2.0/ee/ICU4N.resources.dll": {
+            "locale": "ee"
+          },
+          "lib/netstandard2.0/el/ICU4N.resources.dll": {
+            "locale": "el"
+          },
+          "lib/netstandard2.0/en/ICU4N.resources.dll": {
+            "locale": "en"
+          },
+          "lib/netstandard2.0/eo/ICU4N.resources.dll": {
+            "locale": "eo"
+          },
+          "lib/netstandard2.0/es/ICU4N.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.0/et/ICU4N.resources.dll": {
+            "locale": "et"
+          },
+          "lib/netstandard2.0/eu/ICU4N.resources.dll": {
+            "locale": "eu"
+          },
+          "lib/netstandard2.0/ewo/ICU4N.resources.dll": {
+            "locale": "ewo"
+          },
+          "lib/netstandard2.0/fa/ICU4N.resources.dll": {
+            "locale": "fa"
+          },
+          "lib/netstandard2.0/ff/ICU4N.resources.dll": {
+            "locale": "ff"
+          },
+          "lib/netstandard2.0/fi/ICU4N.resources.dll": {
+            "locale": "fi"
+          },
+          "lib/netstandard2.0/fil/ICU4N.resources.dll": {
+            "locale": "fil"
+          },
+          "lib/netstandard2.0/fo/ICU4N.resources.dll": {
+            "locale": "fo"
+          },
+          "lib/netstandard2.0/fr/ICU4N.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.0/fur/ICU4N.resources.dll": {
+            "locale": "fur"
+          },
+          "lib/netstandard2.0/fy/ICU4N.resources.dll": {
+            "locale": "fy"
+          },
+          "lib/netstandard2.0/ga/ICU4N.resources.dll": {
+            "locale": "ga"
+          },
+          "lib/netstandard2.0/gd/ICU4N.resources.dll": {
+            "locale": "gd"
+          },
+          "lib/netstandard2.0/gl/ICU4N.resources.dll": {
+            "locale": "gl"
+          },
+          "lib/netstandard2.0/gsw/ICU4N.resources.dll": {
+            "locale": "gsw"
+          },
+          "lib/netstandard2.0/gu/ICU4N.resources.dll": {
+            "locale": "gu"
+          },
+          "lib/netstandard2.0/guz/ICU4N.resources.dll": {
+            "locale": "guz"
+          },
+          "lib/netstandard2.0/gv/ICU4N.resources.dll": {
+            "locale": "gv"
+          },
+          "lib/netstandard2.0/ha/ICU4N.resources.dll": {
+            "locale": "ha"
+          },
+          "lib/netstandard2.0/haw/ICU4N.resources.dll": {
+            "locale": "haw"
+          },
+          "lib/netstandard2.0/he/ICU4N.resources.dll": {
+            "locale": "he"
+          },
+          "lib/netstandard2.0/hi/ICU4N.resources.dll": {
+            "locale": "hi"
+          },
+          "lib/netstandard2.0/hr/ICU4N.resources.dll": {
+            "locale": "hr"
+          },
+          "lib/netstandard2.0/hsb/ICU4N.resources.dll": {
+            "locale": "hsb"
+          },
+          "lib/netstandard2.0/hu/ICU4N.resources.dll": {
+            "locale": "hu"
+          },
+          "lib/netstandard2.0/hy/ICU4N.resources.dll": {
+            "locale": "hy"
+          },
+          "lib/netstandard2.0/id/ICU4N.resources.dll": {
+            "locale": "id"
+          },
+          "lib/netstandard2.0/ig/ICU4N.resources.dll": {
+            "locale": "ig"
+          },
+          "lib/netstandard2.0/ii/ICU4N.resources.dll": {
+            "locale": "ii"
+          },
+          "lib/netstandard2.0/in/ICU4N.resources.dll": {
+            "locale": "in"
+          },
+          "lib/netstandard2.0/is/ICU4N.resources.dll": {
+            "locale": "is"
+          },
+          "lib/netstandard2.0/it/ICU4N.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.0/iw/ICU4N.resources.dll": {
+            "locale": "iw"
+          },
+          "lib/netstandard2.0/ja/ICU4N.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.0/jgo/ICU4N.resources.dll": {
+            "locale": "jgo"
+          },
+          "lib/netstandard2.0/jmc/ICU4N.resources.dll": {
+            "locale": "jmc"
+          },
+          "lib/netstandard2.0/ka/ICU4N.resources.dll": {
+            "locale": "ka"
+          },
+          "lib/netstandard2.0/kab/ICU4N.resources.dll": {
+            "locale": "kab"
+          },
+          "lib/netstandard2.0/kam/ICU4N.resources.dll": {
+            "locale": "kam"
+          },
+          "lib/netstandard2.0/kde/ICU4N.resources.dll": {
+            "locale": "kde"
+          },
+          "lib/netstandard2.0/kea/ICU4N.resources.dll": {
+            "locale": "kea"
+          },
+          "lib/netstandard2.0/khq/ICU4N.resources.dll": {
+            "locale": "khq"
+          },
+          "lib/netstandard2.0/ki/ICU4N.resources.dll": {
+            "locale": "ki"
+          },
+          "lib/netstandard2.0/kk/ICU4N.resources.dll": {
+            "locale": "kk"
+          },
+          "lib/netstandard2.0/kkj/ICU4N.resources.dll": {
+            "locale": "kkj"
+          },
+          "lib/netstandard2.0/kl/ICU4N.resources.dll": {
+            "locale": "kl"
+          },
+          "lib/netstandard2.0/kln/ICU4N.resources.dll": {
+            "locale": "kln"
+          },
+          "lib/netstandard2.0/km/ICU4N.resources.dll": {
+            "locale": "km"
+          },
+          "lib/netstandard2.0/kn/ICU4N.resources.dll": {
+            "locale": "kn"
+          },
+          "lib/netstandard2.0/ko/ICU4N.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.0/kok/ICU4N.resources.dll": {
+            "locale": "kok"
+          },
+          "lib/netstandard2.0/ks/ICU4N.resources.dll": {
+            "locale": "ks"
+          },
+          "lib/netstandard2.0/ksb/ICU4N.resources.dll": {
+            "locale": "ksb"
+          },
+          "lib/netstandard2.0/ksf/ICU4N.resources.dll": {
+            "locale": "ksf"
+          },
+          "lib/netstandard2.0/ksh/ICU4N.resources.dll": {
+            "locale": "ksh"
+          },
+          "lib/netstandard2.0/ku/ICU4N.resources.dll": {
+            "locale": "ku"
+          },
+          "lib/netstandard2.0/kw/ICU4N.resources.dll": {
+            "locale": "kw"
+          },
+          "lib/netstandard2.0/ky/ICU4N.resources.dll": {
+            "locale": "ky"
+          },
+          "lib/netstandard2.0/lag/ICU4N.resources.dll": {
+            "locale": "lag"
+          },
+          "lib/netstandard2.0/lb/ICU4N.resources.dll": {
+            "locale": "lb"
+          },
+          "lib/netstandard2.0/lg/ICU4N.resources.dll": {
+            "locale": "lg"
+          },
+          "lib/netstandard2.0/lkt/ICU4N.resources.dll": {
+            "locale": "lkt"
+          },
+          "lib/netstandard2.0/ln/ICU4N.resources.dll": {
+            "locale": "ln"
+          },
+          "lib/netstandard2.0/lo/ICU4N.resources.dll": {
+            "locale": "lo"
+          },
+          "lib/netstandard2.0/lrc/ICU4N.resources.dll": {
+            "locale": "lrc"
+          },
+          "lib/netstandard2.0/lt/ICU4N.resources.dll": {
+            "locale": "lt"
+          },
+          "lib/netstandard2.0/lu/ICU4N.resources.dll": {
+            "locale": "lu"
+          },
+          "lib/netstandard2.0/luo/ICU4N.resources.dll": {
+            "locale": "luo"
+          },
+          "lib/netstandard2.0/luy/ICU4N.resources.dll": {
+            "locale": "luy"
+          },
+          "lib/netstandard2.0/lv/ICU4N.resources.dll": {
+            "locale": "lv"
+          },
+          "lib/netstandard2.0/mas/ICU4N.resources.dll": {
+            "locale": "mas"
+          },
+          "lib/netstandard2.0/mer/ICU4N.resources.dll": {
+            "locale": "mer"
+          },
+          "lib/netstandard2.0/mfe/ICU4N.resources.dll": {
+            "locale": "mfe"
+          },
+          "lib/netstandard2.0/mg/ICU4N.resources.dll": {
+            "locale": "mg"
+          },
+          "lib/netstandard2.0/mgh/ICU4N.resources.dll": {
+            "locale": "mgh"
+          },
+          "lib/netstandard2.0/mgo/ICU4N.resources.dll": {
+            "locale": "mgo"
+          },
+          "lib/netstandard2.0/mk/ICU4N.resources.dll": {
+            "locale": "mk"
+          },
+          "lib/netstandard2.0/ml/ICU4N.resources.dll": {
+            "locale": "ml"
+          },
+          "lib/netstandard2.0/mn/ICU4N.resources.dll": {
+            "locale": "mn"
+          },
+          "lib/netstandard2.0/mo/ICU4N.resources.dll": {
+            "locale": "mo"
+          },
+          "lib/netstandard2.0/mr/ICU4N.resources.dll": {
+            "locale": "mr"
+          },
+          "lib/netstandard2.0/ms/ICU4N.resources.dll": {
+            "locale": "ms"
+          },
+          "lib/netstandard2.0/mt/ICU4N.resources.dll": {
+            "locale": "mt"
+          },
+          "lib/netstandard2.0/mua/ICU4N.resources.dll": {
+            "locale": "mua"
+          },
+          "lib/netstandard2.0/my/ICU4N.resources.dll": {
+            "locale": "my"
+          },
+          "lib/netstandard2.0/mzn/ICU4N.resources.dll": {
+            "locale": "mzn"
+          },
+          "lib/netstandard2.0/naq/ICU4N.resources.dll": {
+            "locale": "naq"
+          },
+          "lib/netstandard2.0/nb/ICU4N.resources.dll": {
+            "locale": "nb"
+          },
+          "lib/netstandard2.0/nd/ICU4N.resources.dll": {
+            "locale": "nd"
+          },
+          "lib/netstandard2.0/nds/ICU4N.resources.dll": {
+            "locale": "nds"
+          },
+          "lib/netstandard2.0/ne/ICU4N.resources.dll": {
+            "locale": "ne"
+          },
+          "lib/netstandard2.0/nl/ICU4N.resources.dll": {
+            "locale": "nl"
+          },
+          "lib/netstandard2.0/nmg/ICU4N.resources.dll": {
+            "locale": "nmg"
+          },
+          "lib/netstandard2.0/nn/ICU4N.resources.dll": {
+            "locale": "nn"
+          },
+          "lib/netstandard2.0/nnh/ICU4N.resources.dll": {
+            "locale": "nnh"
+          },
+          "lib/netstandard2.0/no/ICU4N.resources.dll": {
+            "locale": "no"
+          },
+          "lib/netstandard2.0/nus/ICU4N.resources.dll": {
+            "locale": "nus"
+          },
+          "lib/netstandard2.0/nyn/ICU4N.resources.dll": {
+            "locale": "nyn"
+          },
+          "lib/netstandard2.0/om/ICU4N.resources.dll": {
+            "locale": "om"
+          },
+          "lib/netstandard2.0/or/ICU4N.resources.dll": {
+            "locale": "or"
+          },
+          "lib/netstandard2.0/os/ICU4N.resources.dll": {
+            "locale": "os"
+          },
+          "lib/netstandard2.0/pa-Arab/ICU4N.resources.dll": {
+            "locale": "pa-Arab"
+          },
+          "lib/netstandard2.0/pa-Guru/ICU4N.resources.dll": {
+            "locale": "pa-Guru"
+          },
+          "lib/netstandard2.0/pa/ICU4N.resources.dll": {
+            "locale": "pa"
+          },
+          "lib/netstandard2.0/pl/ICU4N.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/netstandard2.0/ps/ICU4N.resources.dll": {
+            "locale": "ps"
+          },
+          "lib/netstandard2.0/pt/ICU4N.resources.dll": {
+            "locale": "pt"
+          },
+          "lib/netstandard2.0/quz/ICU4N.resources.dll": {
+            "locale": "quz"
+          },
+          "lib/netstandard2.0/rm/ICU4N.resources.dll": {
+            "locale": "rm"
+          },
+          "lib/netstandard2.0/rn/ICU4N.resources.dll": {
+            "locale": "rn"
+          },
+          "lib/netstandard2.0/ro/ICU4N.resources.dll": {
+            "locale": "ro"
+          },
+          "lib/netstandard2.0/rof/ICU4N.resources.dll": {
+            "locale": "rof"
+          },
+          "lib/netstandard2.0/ru/ICU4N.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.0/rw/ICU4N.resources.dll": {
+            "locale": "rw"
+          },
+          "lib/netstandard2.0/rwk/ICU4N.resources.dll": {
+            "locale": "rwk"
+          },
+          "lib/netstandard2.0/sah/ICU4N.resources.dll": {
+            "locale": "sah"
+          },
+          "lib/netstandard2.0/saq/ICU4N.resources.dll": {
+            "locale": "saq"
+          },
+          "lib/netstandard2.0/sbp/ICU4N.resources.dll": {
+            "locale": "sbp"
+          },
+          "lib/netstandard2.0/se/ICU4N.resources.dll": {
+            "locale": "se"
+          },
+          "lib/netstandard2.0/seh/ICU4N.resources.dll": {
+            "locale": "seh"
+          },
+          "lib/netstandard2.0/ses/ICU4N.resources.dll": {
+            "locale": "ses"
+          },
+          "lib/netstandard2.0/sg/ICU4N.resources.dll": {
+            "locale": "sg"
+          },
+          "lib/netstandard2.0/sh/ICU4N.resources.dll": {
+            "locale": "sh"
+          },
+          "lib/netstandard2.0/shi-Latn/ICU4N.resources.dll": {
+            "locale": "shi-Latn"
+          },
+          "lib/netstandard2.0/shi-Tfng/ICU4N.resources.dll": {
+            "locale": "shi-Tfng"
+          },
+          "lib/netstandard2.0/shi/ICU4N.resources.dll": {
+            "locale": "shi"
+          },
+          "lib/netstandard2.0/si/ICU4N.resources.dll": {
+            "locale": "si"
+          },
+          "lib/netstandard2.0/sk/ICU4N.resources.dll": {
+            "locale": "sk"
+          },
+          "lib/netstandard2.0/sl/ICU4N.resources.dll": {
+            "locale": "sl"
+          },
+          "lib/netstandard2.0/smn/ICU4N.resources.dll": {
+            "locale": "smn"
+          },
+          "lib/netstandard2.0/sn/ICU4N.resources.dll": {
+            "locale": "sn"
+          },
+          "lib/netstandard2.0/so/ICU4N.resources.dll": {
+            "locale": "so"
+          },
+          "lib/netstandard2.0/sq/ICU4N.resources.dll": {
+            "locale": "sq"
+          },
+          "lib/netstandard2.0/sr-Cyrl/ICU4N.resources.dll": {
+            "locale": "sr-Cyrl"
+          },
+          "lib/netstandard2.0/sr-Latn/ICU4N.resources.dll": {
+            "locale": "sr-Latn"
+          },
+          "lib/netstandard2.0/sr/ICU4N.resources.dll": {
+            "locale": "sr"
+          },
+          "lib/netstandard2.0/sv/ICU4N.resources.dll": {
+            "locale": "sv"
+          },
+          "lib/netstandard2.0/sw/ICU4N.resources.dll": {
+            "locale": "sw"
+          },
+          "lib/netstandard2.0/ta/ICU4N.resources.dll": {
+            "locale": "ta"
+          },
+          "lib/netstandard2.0/te/ICU4N.resources.dll": {
+            "locale": "te"
+          },
+          "lib/netstandard2.0/teo/ICU4N.resources.dll": {
+            "locale": "teo"
+          },
+          "lib/netstandard2.0/tg/ICU4N.resources.dll": {
+            "locale": "tg"
+          },
+          "lib/netstandard2.0/th/ICU4N.resources.dll": {
+            "locale": "th"
+          },
+          "lib/netstandard2.0/ti/ICU4N.resources.dll": {
+            "locale": "ti"
+          },
+          "lib/netstandard2.0/tl/ICU4N.resources.dll": {
+            "locale": "tl"
+          },
+          "lib/netstandard2.0/to/ICU4N.resources.dll": {
+            "locale": "to"
+          },
+          "lib/netstandard2.0/tr/ICU4N.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/netstandard2.0/tt/ICU4N.resources.dll": {
+            "locale": "tt"
+          },
+          "lib/netstandard2.0/twq/ICU4N.resources.dll": {
+            "locale": "twq"
+          },
+          "lib/netstandard2.0/tzm/ICU4N.resources.dll": {
+            "locale": "tzm"
+          },
+          "lib/netstandard2.0/ug/ICU4N.resources.dll": {
+            "locale": "ug"
+          },
+          "lib/netstandard2.0/uk/ICU4N.resources.dll": {
+            "locale": "uk"
+          },
+          "lib/netstandard2.0/ur/ICU4N.resources.dll": {
+            "locale": "ur"
+          },
+          "lib/netstandard2.0/uz-Arab/ICU4N.resources.dll": {
+            "locale": "uz-Arab"
+          },
+          "lib/netstandard2.0/uz-Cyrl/ICU4N.resources.dll": {
+            "locale": "uz-Cyrl"
+          },
+          "lib/netstandard2.0/uz-Latn/ICU4N.resources.dll": {
+            "locale": "uz-Latn"
+          },
+          "lib/netstandard2.0/uz/ICU4N.resources.dll": {
+            "locale": "uz"
+          },
+          "lib/netstandard2.0/vai-Latn/ICU4N.resources.dll": {
+            "locale": "vai-Latn"
+          },
+          "lib/netstandard2.0/vai-Vaii/ICU4N.resources.dll": {
+            "locale": "vai-Vaii"
+          },
+          "lib/netstandard2.0/vai/ICU4N.resources.dll": {
+            "locale": "vai"
+          },
+          "lib/netstandard2.0/vi/ICU4N.resources.dll": {
+            "locale": "vi"
+          },
+          "lib/netstandard2.0/vun/ICU4N.resources.dll": {
+            "locale": "vun"
+          },
+          "lib/netstandard2.0/wae/ICU4N.resources.dll": {
+            "locale": "wae"
+          },
+          "lib/netstandard2.0/wo/ICU4N.resources.dll": {
+            "locale": "wo"
+          },
+          "lib/netstandard2.0/xog/ICU4N.resources.dll": {
+            "locale": "xog"
+          },
+          "lib/netstandard2.0/yav/ICU4N.resources.dll": {
+            "locale": "yav"
+          },
+          "lib/netstandard2.0/yi/ICU4N.resources.dll": {
+            "locale": "yi"
+          },
+          "lib/netstandard2.0/yo/ICU4N.resources.dll": {
+            "locale": "yo"
+          },
+          "lib/netstandard2.0/zgh/ICU4N.resources.dll": {
+            "locale": "zgh"
+          },
+          "lib/netstandard2.0/zh-Hans/ICU4N.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.0/zh-Hant/ICU4N.resources.dll": {
+            "locale": "zh-Hant"
+          },
+          "lib/netstandard2.0/zh/ICU4N.resources.dll": {
+            "locale": "zh"
+          },
+          "lib/netstandard2.0/zu/ICU4N.resources.dll": {
+            "locale": "zu"
+          }
+        }
+      },
+      "J2N/2.2.0-alpha-0021": {
+        "runtime": {
+          "lib/net9.0/J2N.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.2.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.Caching.Abstractions/6.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "6.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Caching.Abstractions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "Microsoft.Extensions.Caching.Memory/6.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Abstractions": "6.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.4",
+          "Microsoft.Extensions.Options": "6.0.0",
+          "Microsoft.Extensions.Primitives": "6.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Caching.Memory.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.3524.45918"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/6.0.4": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.1823.26907"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options/6.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Primitives": "6.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.Extensions.Options.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "Microsoft.Extensions.Primitives/6.0.0": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.Primitives.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      },
+      "System.IO.Hashing/8.0.0": {
+        "runtime": {
+          "lib/net8.0/System.IO.Hashing.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Cascade.UI/7.0.0": {
+        "dependencies": {
+          "Echostorm.SharpImage": "1.0.3",
+          "Etch.Geometry": "7.0.0",
+          "Etch.Gpu": "7.0.0",
+          "Etch.Gpu.Compositor": "7.0.0",
+          "Etch.Raster.Cpu": "7.0.0",
+          "Etch.Scene": "7.0.0",
+          "Etch.Testing": "7.0.0",
+          "Etch.Text": "7.0.0",
+          "Etch.Tiling": "7.0.0",
+          "HarfBuzzSharp": "8.3.1.3"
+        },
+        "runtime": {
+          "Cascade.UI.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Cascade.UI.Installer/7.0.0": {
+        "dependencies": {
+          "Cascade.UI": "7.0.0",
+          "Cascade.UI.Updater.Core": "7.0.0"
+        },
+        "runtime": {
+          "Cascade.UI.Installer.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Cascade.UI.Updater.Core/7.0.0": {
+        "runtime": {
+          "Cascade.UI.Updater.Core.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Echostorm.Etch.Abstractions/7.0.0": {
+        "runtime": {
+          "Etch.Abstractions.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Analyzers/7.0.0": {
+        "runtime": {
+          "Etch.Analyzers.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.ClipBlendGradient/7.0.0": {
+        "dependencies": {
+          "Etch.Geometry": "7.0.0",
+          "Etch.Primitives": "7.0.0"
+        },
+        "runtime": {
+          "Etch.ClipBlendGradient.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Effects/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0",
+          "Echostorm.SharpImage": "1.0.3",
+          "Etch.Geometry": "7.0.0",
+          "Etch.Gpu": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Effects.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Geometry/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0",
+          "Etch.Primitives": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Geometry.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Gpu/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0",
+          "Etch.ClipBlendGradient": "7.0.0",
+          "Etch.Gpu.Native": "7.0.0",
+          "Etch.Primitives": "7.0.0",
+          "Etch.Shaders": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Gpu.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Gpu.Compositor/7.0.0": {
+        "dependencies": {
+          "Etch.Effects": "7.0.0",
+          "Etch.Gpu": "7.0.0",
+          "Etch.Tiling": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Gpu.Compositor.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Gpu.Native/7.0.0": {
+        "runtime": {
+          "Etch.Gpu.Native.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Primitives/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Primitives.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Raster.Cpu/7.0.0": {
+        "dependencies": {
+          "Etch.ClipBlendGradient": "7.0.0",
+          "Etch.Effects": "7.0.0",
+          "Etch.Geometry": "7.0.0",
+          "Etch.Primitives": "7.0.0",
+          "Etch.Scene": "7.0.0",
+          "Etch.Tiling": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Raster.Cpu.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Scene/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0",
+          "Etch.Analyzers": "7.0.0",
+          "Etch.Geometry": "7.0.0",
+          "Etch.Primitives": "7.0.0",
+          "System.IO.Hashing": "8.0.0"
+        },
+        "runtime": {
+          "Etch.Scene.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Shaders/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Shaders.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Testing/7.0.0": {
+        "dependencies": {
+          "Echostorm.SharpImage": "1.0.3",
+          "Etch.Gpu.Compositor": "7.0.0",
+          "Etch.Raster.Cpu": "7.0.0",
+          "Etch.Scene": "7.0.0",
+          "Etch.Tiling": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Testing.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Text/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0",
+          "Etch.Geometry": "7.0.0",
+          "Etch.Gpu": "7.0.0",
+          "FreeTypeSharp": "1.1.3",
+          "HarfBuzzSharp": "8.3.1.3",
+          "HarfBuzzSharp.NativeAssets.Win32": "8.3.1.3",
+          "ICU4N": "60.1.0-alpha.439",
+          "System.IO.Hashing": "8.0.0"
+        },
+        "runtime": {
+          "Etch.Text.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Tiling/7.0.0": {
+        "dependencies": {
+          "Echostorm.Etch.Abstractions": "7.0.0",
+          "Etch.Analyzers": "7.0.0",
+          "Etch.Geometry": "7.0.0",
+          "Etch.Primitives": "7.0.0",
+          "Etch.Scene": "7.0.0"
+        },
+        "runtime": {
+          "Etch.Tiling.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      },
+      "Etch.Abstractions/7.0.0.0": {
+        "runtime": {
+          "Etch.Abstractions.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CascadeInstallerTest/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Echostorm.SharpImage/1.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cGMJ6WwMoXD1Hx0cim4zC3x7sDbmFyCCkaOqarKKKA3V4XMzlonZzlT3AO50OcYlENVtJWo2iLoWxTs30gRnqQ==",
+      "path": "echostorm.sharpimage/1.0.3",
+      "hashPath": "echostorm.sharpimage.1.0.3.nupkg.sha512"
+    },
+    "FreeTypeSharp/1.1.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1JCuO0cbajKxEiuydA9Ms7EFfdSNnR3JTv4unw8PJSIOejkZnTs/9YQD0T2jxX9yZtAAcn1J6R/MZ33b0Snasg==",
+      "path": "freetypesharp/1.1.3",
+      "hashPath": "freetypesharp.1.1.3.nupkg.sha512"
+    },
+    "HarfBuzzSharp/8.3.1.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NGZ2+ZVNPM+NdHB/asW0/ykWngyHWwcqjrbN2nDeH1B/aptPGlCUl8wkQ2cSJxw5fdWgdmIPmNuTPWpLwNVXWg==",
+      "path": "harfbuzzsharp/8.3.1.3",
+      "hashPath": "harfbuzzsharp.8.3.1.3.nupkg.sha512"
+    },
+    "HarfBuzzSharp.NativeAssets.Win32/8.3.1.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bx8CE8Js+XGX8PUxAHCBDEORt5aaBYtMN4Hr9QFs57Xithh6yjUyYqksizH6eRDhJkwsGI+SXWmPmMm8lZC9Pw==",
+      "path": "harfbuzzsharp.nativeassets.win32/8.3.1.3",
+      "hashPath": "harfbuzzsharp.nativeassets.win32.8.3.1.3.nupkg.sha512"
+    },
+    "ICU4N/60.1.0-alpha.439": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TF9Hlm+tc+stkYfcaEfpBjxKlNcMOkcpo2Tkc7yuZju9uR6FXmKjwxVQ4H93eAkdIbrmshfn2olG+ReY8qFvaA==",
+      "path": "icu4n/60.1.0-alpha.439",
+      "hashPath": "icu4n.60.1.0-alpha.439.nupkg.sha512"
+    },
+    "ICU4N.Resources/60.1.0-alpha.439": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-j72PtlLJ9bVl48lKurpOKZ4y/ncjzxrmpHLXxUaeecDB199R0sjE6eGrhIR/z2ERB0EdxqMWOegf4awh+OlpdA==",
+      "path": "icu4n.resources/60.1.0-alpha.439",
+      "hashPath": "icu4n.resources.60.1.0-alpha.439.nupkg.sha512"
+    },
+    "J2N/2.2.0-alpha-0021": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lg6sno1thdO6FiJ4joao9C9Kkm9qH2PRlkab+Zdg1LzuL9GhJaI9uDCA+8UNB1EcrGbW4UrwTNjcFC0+bCZSeQ==",
+      "path": "j2n/2.2.0-alpha-0021",
+      "hashPath": "j2n.2.2.0-alpha-0021.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Abstractions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bcz5sSFJbganH0+YrfvIjJDIcKNW7TL07C4d1eTmXy/wOt52iz4LVogJb6pazs7W0+74j0YpXFErvp++Aq5Bsw==",
+      "path": "microsoft.extensions.caching.abstractions/6.0.0",
+      "hashPath": "microsoft.extensions.caching.abstractions.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Caching.Memory/6.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ANjkN9TiBZXm5cvj3bb3QbezBzqkupCzxwgNf46d4V4ToRBHcEp3IEgbc67M3ZqVHQxaJgEncZ/frdqznpVWIw==",
+      "path": "microsoft.extensions.caching.memory/6.0.2",
+      "hashPath": "microsoft.extensions.caching.memory.6.0.2.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/6.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.Abstractions/6.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-K14wYgwOfKVELrUh5eBqlC8Wvo9vvhS3ZhIvcswV2uS/ubkTRPSQsN557EZiYUSSoZNxizG+alN4wjtdyLdcyw==",
+      "path": "microsoft.extensions.logging.abstractions/6.0.4",
+      "hashPath": "microsoft.extensions.logging.abstractions.6.0.4.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dzXN0+V1AyjOe2xcJ86Qbo233KHuLEY0njf/P2Kw8SfJU+d45HNS2ctJdnEnrWbM9Ye2eFgaC5Mj9otRMU6IsQ==",
+      "path": "microsoft.extensions.options/6.0.0",
+      "hashPath": "microsoft.extensions.options.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Primitives/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9+PnzmQFfEFNR9J2aDTfJGGupShHjOuGw4VUv+JB044biSHrnmCIMD+mJHmb2H7YryrfBEXDurxQ47gJZdCKNQ==",
+      "path": "microsoft.extensions.primitives/6.0.0",
+      "hashPath": "microsoft.extensions.primitives.6.0.0.nupkg.sha512"
+    },
+    "System.IO.Hashing/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ne1843evDugl0md7Fjzy6QjJrzsjh46ZKbhf8GwBXb5f/gw97J4bxMs0NQKifDuThh/f0bZ0e62NPl1jzTuRqA==",
+      "path": "system.io.hashing/8.0.0",
+      "hashPath": "system.io.hashing.8.0.0.nupkg.sha512"
+    },
+    "Cascade.UI/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cascade.UI.Installer/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cascade.UI.Updater.Core/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Echostorm.Etch.Abstractions/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Analyzers/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.ClipBlendGradient/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Effects/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Geometry/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Gpu/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Gpu.Compositor/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Gpu.Native/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Primitives/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Raster.Cpu/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Scene/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Shaders/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Testing/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Text/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Tiling/7.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Etch.Abstractions/7.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

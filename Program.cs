@@ -20,6 +20,8 @@ Updater.Configure(
     installDirectory: installDir,
     applicationExePath: Environment.ProcessPath ?? IOPath.Combine(installDir, "CascadeInstallerTest.exe"));
 
+MainView.Log($"boot: installDir={installDir} version={version} pid={Environment.ProcessId}");
+
 App.Run<MainView>(config =>
 {
     config.UseEtch();

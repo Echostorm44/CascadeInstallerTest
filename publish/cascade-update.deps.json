@@ -7,31 +7,31 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {},
     ".NETCoreApp,Version=v10.0/win-x64": {
-      "cascade-update/1.0.0": {
+      "cascade-update/13.0.0": {
         "dependencies": {
-          "Cascade.UI.Updater.Core": "1.0.0"
+          "Cascade.UI.Updater.Core": "13.0.0"
         },
         "runtime": {
           "cascade-update.dll": {}
         }
       },
-      "Cascade.UI.Updater.Core/1.0.0": {
+      "Cascade.UI.Updater.Core/13.0.0": {
         "runtime": {
           "Cascade.UI.Updater.Core.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.0.0"
           }
         }
       }
     }
   },
   "libraries": {
-    "cascade-update/1.0.0": {
+    "cascade-update/13.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Cascade.UI.Updater.Core/1.0.0": {
+    "Cascade.UI.Updater.Core/13.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

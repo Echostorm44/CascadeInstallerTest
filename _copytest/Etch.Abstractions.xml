@@ -1,0 +1,582 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Abstractions.Determinism.DefaultFrameClock">
+            <summary>Production default for <see cref="T:Etch.Abstractions.Determinism.IFrameClock"/> — uses <see cref="T:System.Diagnostics.Stopwatch"/> for monotonic time.</summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.DefaultEntropySource">
+            <summary>Production default for <see cref="T:Etch.Abstractions.Determinism.IEntropySource"/> — uses <see cref="T:System.Security.Cryptography.RandomNumberGenerator"/>.</summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.SingleThreadTileScheduler">
+            <summary>Production default for <see cref="T:Etch.Abstractions.Determinism.ITileScheduler"/> — sequential, single-threaded execution.</summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.EmbeddedShaderSource">
+            <summary>Production default for <see cref="T:Etch.Abstractions.Determinism.IShaderSource"/> — looks up embedded resources.</summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.PhysicalFileSystem">
+            <summary>Production default for <see cref="T:Etch.Abstractions.Determinism.IFileSystem"/> — maps directly to <see cref="T:System.IO.File"/>.</summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.IEntropySource">
+            <summary>
+            Provides cryptographically-safe entropy for deterministic rendering.
+            All non-deterministic RNG must route through this seam.
+            </summary>
+            <remarks>
+            Failure to use this seam causes pixel-identical output guarantees to be violated,
+            as RNG state varies across machines and runs.
+            </remarks>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IEntropySource.Fill(System.Span{System.Byte})">
+            <summary>
+            Fills the specified span with entropy bytes.
+            </summary>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IEntropySource.NextUInt64">
+            <summary>
+            Returns the next 64-bit unsigned integer.
+            </summary>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IEntropySource.NextUInt32">
+            <summary>
+            Returns the next 32-bit unsigned integer.
+            </summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.IFileSystem">
+            <summary>
+            Provides file system access for deterministic rendering.
+            All file I/O must route through this seam.
+            </summary>
+            <remarks>
+            Failure to use this seam causes pixel-identical output guarantees to be violated,
+            as file system state varies across machines and runs. The production default
+            maps straight to <see cref="N:System.IO"/>; test doubles use in-memory storage.
+            </remarks>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IFileSystem.ReadAllBytes(System.String)">
+            <summary>
+            Reads the contents of the file at <paramref name="path"/> as bytes.
+            </summary>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IFileSystem.ReadAllText(System.String)">
+            <summary>
+            Reads the contents of the file at <paramref name="path"/> as text.
+            </summary>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IFileSystem.WriteAllBytes(System.String,System.Byte[])">
+            <summary>
+            Writes <paramref name="data"/> to the file at <paramref name="path"/>.
+            </summary>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IFileSystem.WriteAllText(System.String,System.String)">
+            <summary>
+            Writes <paramref name="content"/> to the file at <paramref name="path"/>.
+            </summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.IFrameClock">
+            <summary>
+            Provides monotonic time and frame sequencing for deterministic rendering.
+            All non-deterministic wall-clock access must route through this seam.
+            </summary>
+            <remarks>
+            Failure to use this seam causes pixel-identical output guarantees to be violated,
+            as wall-clock time varies across machines and runs.
+            </remarks>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IFrameClock.NowNanos">
+            <summary>
+            Returns monotonic time in nanoseconds.
+            </summary>
+        </member>
+        <member name="P:Etch.Abstractions.Determinism.IFrameClock.FrameCounter">
+            <summary>
+            Returns the current frame counter. Implementations must guarantee
+            FrameCounter increases by exactly 1 per frame.
+            </summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.IShaderSource">
+            <summary>
+            Provides shader source code for deterministic rendering.
+            All shader lookups must route through this seam.
+            </summary>
+            <remarks>
+            Failure to use this seam causes pixel-identical output guarantees to be violated,
+            as shader file lookups vary across machines and runs. No disk I/O is permitted;
+            all shaders are embedded resources identified by <see cref="T:Etch.Abstractions.Determinism.ShaderId"/>.
+            </remarks>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IShaderSource.GetSpirv(Etch.Abstractions.Determinism.ShaderId)">
+            <summary>
+            Returns the SPIR-V bytecode for the specified shader.
+            </summary>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.IShaderSource.GetWgsl(Etch.Abstractions.Determinism.ShaderId)">
+            <summary>
+            Returns the WGSL source for the specified shader.
+            </summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.ShaderId">
+            <summary>
+            Identifies a shader for lookup via <see cref="T:Etch.Abstractions.Determinism.IShaderSource"/>.
+            </summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.TileBody`1">
+            <summary>
+            Delegate for tile body iteration.
+            </summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.ITileScheduler">
+            <summary>
+            Schedules tile processing for deterministic parallel execution.
+            All non-deterministic task scheduling must route through this seam.
+            </summary>
+            <remarks>
+            Failure to use this seam causes pixel-identical output guarantees to be violated,
+            as thread ordering varies across machines and runs. Implementations may be sequential
+            or deterministic-parallel, but must guarantee ordered reduction per D-014.
+            </remarks>
+        </member>
+        <member name="M:Etch.Abstractions.Determinism.ITileScheduler.ForEachTile``1(System.Int32,``0,Etch.Abstractions.Determinism.TileBody{``0})">
+            <summary>
+            Iterates over each tile, invoking <paramref name="body"/> with the tile index and state.
+            Implementations choose sequential or deterministic-parallel execution.
+            </summary>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.Testing.FixedFrameClock">
+            <summary>
+            Test double for <see cref="T:Etch.Abstractions.Determinism.IFrameClock"/> — fixed time and frame counter for deterministic replay.
+            </summary>
+            <remarks>This type is compiled into the main assembly but is for test use only.</remarks>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.Testing.DeterministicEntropySource">
+            <summary>
+            Test double for <see cref="T:Etch.Abstractions.Determinism.IEntropySource"/> — deterministic Xorshift64 for reproducible output.
+            </summary>
+            <remarks>This type is compiled into the main assembly but is for test use only.</remarks>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.Testing.DeterministicParallelTileScheduler">
+            <summary>
+            Test double for <see cref="T:Etch.Abstractions.Determinism.ITileScheduler"/> — deterministic parallel execution with ordered reduction.
+            </summary>
+            <remarks>
+            This type is compiled into the main assembly but is for test use only.
+            Results are invariant under thread count per D-014 parallel reduction contract.
+            </remarks>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.Testing.InMemoryShaderSource">
+            <summary>
+            Test double for <see cref="T:Etch.Abstractions.Determinism.IShaderSource"/> — in-memory shader storage for deterministic testing.
+            </summary>
+            <remarks>This type is compiled into the main assembly but is for test use only.</remarks>
+        </member>
+        <member name="T:Etch.Abstractions.Determinism.Testing.InMemoryFileSystem">
+            <summary>
+            Test double for <see cref="T:Etch.Abstractions.Determinism.IFileSystem"/> — in-memory file storage for deterministic testing.
+            </summary>
+            <remarks>This type is compiled into the main assembly but is for test use only.</remarks>
+        </member>
+        <member name="T:Etch.Abstractions.EtchExtensionPointAttribute">
+            <summary>
+            Marks an interface as an intentional extension point, exempting it from the ET0107
+            (no-single-implementer) rule.
+            </summary>
+        </member>
+        <member name="T:Etch.EtchException">
+            <summary>
+            The only exception type thrown by Etch. Carries a stable <see cref="T:Etch.PanicCode"/> and
+            an optional <see cref="P:Etch.EtchException.CallSite"/> so logs and crash dumps can correlate an incident
+            to the exact source location that raised it.
+            </summary>
+            <remarks>
+            <para>
+            <b>Shape contract.</b> Sealed; no serialization constructor; no reflection-dependent
+            behavior; a single inner-exception link at most (panic codes carry context; stacks do
+            the rest). The type is AOT-clean and safe to throw from trimmed / Native AOT builds.
+            </para>
+            <para>
+            <b>When to throw directly.</b> Almost never. Prefer <see cref="M:Etch.Panic.Invariant(Etch.PanicCode,System.String,System.String,System.Int32)"/> and
+            its siblings — they are <c>[DoesNotReturn]</c>, capture caller file and line, and keep
+            the throw shape consistent. ET0108 (<c>NoRawThrowAnalyzer</c>) forbids raw
+            <c>throw new EtchException(...)</c> outside the <c>Panic</c> helpers themselves.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Etch.EtchException.Code">
+            <summary>The stable <c>ET-P-####</c> identifier for the panic class.</summary>
+        </member>
+        <member name="P:Etch.EtchException.CallSite">
+            <summary>
+            The source file and line where the panic originated, formatted as
+            <c>&lt;path&gt;:&lt;line&gt;</c>. <see langword="null"/> when the call site was
+            not captured (e.g. exception constructed manually by a non-<see cref="T:Etch.Panic"/>
+            caller).
+            </summary>
+        </member>
+        <member name="M:Etch.EtchException.#ctor(Etch.PanicCode,System.String,System.String)">
+            <summary>Creates an <see cref="T:Etch.EtchException"/> with the given code, message, and optional call site.</summary>
+        </member>
+        <member name="M:Etch.EtchException.#ctor(Etch.PanicCode,System.String,System.Exception,System.String)">
+            <summary>
+            Creates an <see cref="T:Etch.EtchException"/> wrapping a single inner exception. Use only
+            at the boundary where native or third-party code has already produced the inner
+            exception — internal Etch code does not chain.
+            </summary>
+        </member>
+        <member name="T:Etch.Panic">
+            <summary>
+            Static entry points that throw <see cref="T:Etch.EtchException"/> with a captured call site.
+            Every internal Etch failure path funnels through one of these methods so that logs,
+            crash dumps, and the verifier see a consistent shape.
+            </summary>
+            <remarks>
+            <para>
+            All methods are <see cref="T:System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute"/>-annotated. The C# compiler uses
+            this to treat code after a <c>Panic.*</c> call as unreachable, so a method that ends
+            with <c>Panic.Invariant(...)</c> and no <c>return</c> statement still type-checks.
+            </para>
+            <para>
+            The <c>file</c> and <c>line</c> parameters are populated by the compiler via
+            <see cref="T:System.Runtime.CompilerServices.CallerFilePathAttribute"/> and <see cref="T:System.Runtime.CompilerServices.CallerLineNumberAttribute"/>; callers
+            must not pass them explicitly.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Etch.Panic.Invariant(Etch.PanicCode,System.String,System.String,System.Int32)">
+            <summary>
+            Raises a generic invariant violation with the supplied <paramref name="code"/> and
+            <paramref name="message"/>. Captures the caller's file path and line number into
+            <see cref="P:Etch.EtchException.CallSite"/>.
+            </summary>
+        </member>
+        <member name="M:Etch.Panic.ArgumentNull(System.String,System.String,System.Int32)">
+            <summary>Raises <see cref="F:Etch.PanicCodes.ArgumentNull"/> naming <paramref name="paramName"/>.</summary>
+        </member>
+        <member name="M:Etch.Panic.ArgumentOutOfRange(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Raises <see cref="F:Etch.PanicCodes.ArgumentOutOfRange"/> naming <paramref name="paramName"/>
+            and optionally including an extra <paramref name="message"/> explaining the valid range.
+            </summary>
+        </member>
+        <member name="M:Etch.Panic.NotImplemented(System.String,System.String,System.Int32)">
+            <summary>
+            Raises <see cref="F:Etch.PanicCodes.NotImplemented"/> naming the <paramref name="feature"/>
+            that was invoked but is not wired up on this build or platform.
+            </summary>
+        </member>
+        <member name="T:Etch.PanicCode">
+            <summary>
+            Stable identifier for a panic or exception condition. Backed by a string of the form
+            <c>ET-P-####</c> where <c>####</c> is a zero-padded sequential number. Codes are the
+            primary key shared by logs, crash dumps, the scene-reproducer verifier, and support
+            diagnostics, so they must remain stable once allocated.
+            </summary>
+            <remarks>
+            <see cref="T:Etch.PanicCode"/> is a thin wrapper over <see cref="T:System.String"/> rather than an
+            enum so that the registry in <see cref="T:Etch.PanicCodes"/> can grow without recompiling
+            every downstream assembly, and so that codes survive round-trips through text logs
+            and structured telemetry without losing their exact spelling.
+            </remarks>
+        </member>
+        <member name="P:Etch.PanicCode.Value">
+            <summary>The <c>ET-P-####</c> identifier.</summary>
+        </member>
+        <member name="M:Etch.PanicCode.#ctor(System.String)">
+            <summary>Wraps the specified code string. Callers should use the constants on
+            <see cref="T:Etch.PanicCodes"/> rather than constructing codes ad-hoc.</summary>
+        </member>
+        <member name="T:Etch.PanicCodes">
+            <summary>
+            Central registry of allocated panic codes. Every code used anywhere in Etch must
+            appear here; the living catalogue of meanings lives in <c>docs/00-overview/panic-codes.md</c>
+            and is the single source of truth for human-readable context.
+            </summary>
+            <remarks>
+            When adding a code: append a constant here, append a row to <c>panic-codes.md</c>, and
+            leave the numeric suffix monotonically increasing. Never re-use a retired number.
+            </remarks>
+        </member>
+        <member name="F:Etch.PanicCodes.BufferOverflow">
+            <summary>ET-P-0001 — write past the end of a fixed-size buffer.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.UnexpectedAllocation">
+            <summary>ET-P-0002 — managed allocation detected inside an <c>AllocGuard</c> scope.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvariantViolation">
+            <summary>ET-P-0003 — generic invariant violation with caller-supplied message.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.ArgumentNull">
+            <summary>ET-P-0004 — a non-null parameter contract received <see langword="null"/>.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.ArgumentOutOfRange">
+            <summary>ET-P-0005 — an argument fell outside its declared range.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvalidState">
+            <summary>ET-P-0006 — operation invoked on a type in a state that forbids it (post-dispose, pre-init, etc.).</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.NotImplemented">
+            <summary>ET-P-0007 — a declared feature path is not implemented on this build/platform.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SceneReproVersionMismatch">
+            <summary>ET-P-0020 — scene-reproducer file version is newer than supported by the reader.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuValidation">
+            <summary>ET-P-0200 — wgpu validation error (validation layer caught a usage mistake).</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuOutOfMemory">
+            <summary>ET-P-0201 — wgpu out-of-memory error (allocation exceeded device limits).</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuInternal">
+            <summary>ET-P-0202 — wgpu internal error (bug in wgpu-native or driver).</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuUnknown">
+            <summary>ET-P-0203 — unknown wgpu error type.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuReserved">
+            <summary>ET-P-0204 — reserved for future GPU error codes.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SurfaceOutlivesInstance">
+            <summary>ET-P-0205 — surface outlives the instance it was created from.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SurfaceHandleNull">
+            <summary>ET-P-0206 — a surface handle passed to the native layer was null.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvalidSwapChainSize">
+            <summary>ET-P-0207 — swap chain configured with zero or invalid dimensions.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.LabelTooLong">
+            <summary>ET-P-0208 — a debug label exceeds the maximum 127-byte length.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.TimestampQueryUnsupported">
+            <summary>ET-P-0209 — timestamp queries are not supported by the current adapter.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuAdapterUnavailable">
+            <summary>ET-P-0210 — no GPU adapter available for off-screen rendering.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuDeviceCreationFailed">
+            <summary>ET-P-0211 — wgpu device creation failed.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuBufferMapTimeout">
+            <summary>ET-P-0212 — GPU buffer map timed out during read-back.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.DegenerateVector">
+            <summary>ET-P-0301 — a geometric operation received a degenerate input (e.g. normalising a zero-length vector).</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.NonInvertibleAffine">
+            <summary>ET-P-0302 — an affine transform is singular and cannot be inverted.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvertedRect">
+            <summary>ET-P-0303 — a Rect was constructed with MaxX &lt; MinX or MaxY &lt; MinY.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvalidCircle">
+            <summary>ET-P-0304 — a Circle was constructed with a negative radius.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.PathVerbWithoutMoveTo">
+            <summary>ET-P-0305 — a path verb that requires a prior MoveTo (e.g. LineTo) was emitted before any MoveTo.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.BuilderConsumed">
+            <summary>ET-P-0306 — Build() was called more than once on the same BezPathBuilder.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SpanLengthMismatch">
+            <summary>ET-P-0307 — src/dst spans passed to a batch operation had mismatched lengths.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.FlattenSinkOverflow">
+            <summary>ET-P-0308 — a FlattenSink accepted a point when its buffer was already full and autoflush was disabled.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.UnsortedLengths">
+            <summary>ET-P-0309 — lengths passed to SampleAtLengthsSorted were not sorted in ascending order.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SceneBuilderConsumed">
+            <summary>ET-P-0402 — SceneBuilder was used after End() was called.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvalidSceneResourceId">
+            <summary>ET-P-0403 — an invalid resource ID was passed to a SceneBuilder draw method.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SceneFormatBadMagic">
+            <summary>ET-P-0404 — scene format buffer does not start with the ETSC magic bytes.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SceneFormatVersionTooNew">
+            <summary>ET-P-0405 — scene format major version is newer than supported.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SceneFormatTruncated">
+            <summary>ET-P-0406 — scene format buffer is too short to contain the declared header.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.BadFrameMarkers">
+            <summary>ET-P-0420 — scene frame markers are malformed (duplicate/missing BeginFrame/EndFrame).</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.UnbalancedLayerStack">
+            <summary>ET-P-0421 — PopLayer without a matching PushLayer.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.LayerStackOverflow">
+            <summary>ET-P-0422 — PushLayer depth exceeds 32.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.UnbalancedClipStack">
+            <summary>ET-P-0423 — PopClip without a matching PushClip.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvalidResourceId">
+            <summary>ET-P-0424 — a scene command references a resource ID that does not exist.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.NonFiniteGeometry">
+            <summary>ET-P-0425 — NaN or Infinity found in transform or geometry coordinates.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.EmptyPath">
+            <summary>ET-P-0426 — a path used in FillPath or StrokePath has fewer than 2 verbs.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.BadGradient">
+            <summary>ET-P-0427 — a gradient paint has fewer than 2 stops or non-monotone offsets.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.BadLayerOpacity">
+            <summary>ET-P-0428 — PushLayer opacity is outside the valid range [0, 1].</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.BadStrokeParam">
+            <summary>ET-P-0429 — stroke width is not &gt; 0, or miter limit is &lt; 1.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvalidSurfaceSize">
+            <summary>ET-P-0501 — surface or grid dimensions are &lt;= 0.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.AccumulatorConsumed">
+            <summary>ET-P-0502 — ClassificationAccumulator.Finish() called more than once.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.SchedulerRequired">
+            <summary>ET-P-0503 — a null ITileScheduler was passed to ParallelClassifier.Classify.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.ShaderCompileError">
+            <summary>ET-P-0601 — a shader failed to compile at runtime (WebGPU validation error).</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.ClipStackOverflow">
+            <summary>ET-P-0702 — PushClip depth exceeds 16 in CPU rasterizer.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.StripBudgetExceeded">
+            <summary>ET-P-0801 — strip + coverage arena exceeds 64 MiB budget per frame.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.UnsortedDrawOrder">
+            <summary>ET-P-0802 — draw order is not sorted by (layer, commandIndex) in DEBUG mode.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.GpuClipStackOverflow">
+            <summary>ET-P-0803 — GPU clip mask stack exceeds 16 levels.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.ClipStackTooDeep">
+            <summary>ET-P-0902 — PushClip depth exceeds 16.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.DegenerateRadialGradient">
+            <summary>ET-P-0903 — a radial gradient was created with a zero or negative radius.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.DegenerateSweepGradient">
+            <summary>ET-P-0904 — a sweep gradient was created with endAngle &lt;= startAngle.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.DegenerateDashPattern">
+            <summary>ET-P-1001 — a dash pattern was created with null/empty segments or zero sum.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.InvalidAtlasDimension">
+            <summary>ET-P-1101 — a glyph atlas dimension was not 2048 or 4096.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.AtlasInsertFailedAfterEviction">
+            <summary>ET-P-1102 — eviction freed space but insert still failed.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.IcuDataMissing">
+            <summary>ET-P-1103 — ICU4N data files are missing or could not be loaded.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.ImageDecodeFailed">
+            <summary>ET-P-1201 — SharpImage failed to decode the image data.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.ImageDimensionsExceedLimit">
+            <summary>ET-P-1202 — decoded image dimensions exceed the device's maxTextureDimension2D limit.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.DegenerateMesh">
+            <summary>ET-P-1601 — a mesh gradient was created with fewer than 2 rows or 2 columns, or vertex count doesn't match.</summary>
+        </member>
+        <member name="F:Etch.PanicCodes.DegenerateNoise">
+            <summary>ET-P-1602 — noise spec created with invalid octaves, negative scale, or zero opacity.</summary>
+        </member>
+        <member name="T:Etch.EtchLogAttribute">
+            <summary>
+            Marks a static partial method as a structured-logging entry point. The
+            <c>EtchLoggerGenerator</c> source-generator emits a zero-allocation
+            implementation that checks IsEnabled, builds a stackalloc key/value span,
+            and forwards to IEtchLogger.Log.
+            </summary>
+            <remarks>
+            The attributed method must be static partial, take IEtchLogger as its first
+            parameter, and take additional parameters matching the placeholder names in
+            Template by index position. Placeholders use the {name} convention matching
+            .NET string interpolation but without the $ prefix.
+            </remarks>
+        </member>
+        <member name="P:Etch.EtchLogAttribute.EventId">
+            <summary>Application-defined event identifier passed through to IEtchLogger.Log.</summary>
+        </member>
+        <member name="P:Etch.EtchLogAttribute.Level">
+            <summary>The minimum EtchLogLevel at which this message should be emitted.</summary>
+        </member>
+        <member name="P:Etch.EtchLogAttribute.Template">
+            <summary>
+            Message template with named placeholders, e.g.
+            Tile {tileIndex} classified with {stripCount} strips.
+            Placeholders map to method parameters by zero-based index position
+            (excluding the leading IEtchLogger parameter).
+            </summary>
+        </member>
+        <member name="T:Etch.EtchLogLevel">
+            <summary>
+            Log event severity levels. Errors at <see cref="F:Etch.EtchLogLevel.Error"/> and above are routed through
+            <see cref="T:Etch.Panic"/> rather than <see cref="T:Etch.IEtchLogger"/> — panic codes carry the
+            machine-readable incident key that logs and crash dumps can correlate on.
+            </summary>
+        </member>
+        <member name="T:Etch.IEtchLogger">
+            <summary>
+            Minimal structured-logging sink for Etch hot paths. Consumers (e.g. CascadeUI) bridge
+            this to their platform logger (<c>ILogger</c>, <c>spdlog</c>, etc.) in one line.
+            </summary>
+            <remarks>
+            <para>
+            <b>Design constraints.</b> No scopes, no filters, no generics. The single
+            <see cref="M:Etch.IEtchLogger.Log(Etch.EtchLogLevel,System.Int32,System.String,System.ReadOnlySpan{System.Collections.Generic.KeyValuePair{System.String,System.Object}})"/> method accepts a <see cref="T:System.ReadOnlySpan`1"/> of key/value pairs so
+            that generated call sites can use <c>stackalloc</c> and stay allocation-free on every
+            call. Consumers who need filtering do it in their bridge layer before calling
+            <see cref="M:Etch.IEtchLogger.Log(Etch.EtchLogLevel,System.Int32,System.String,System.ReadOnlySpan{System.Collections.Generic.KeyValuePair{System.String,System.Object}})"/>.
+            </para>
+            <para>
+            <b>Panic vs. logging.</b> <see cref="F:Etch.EtchLogLevel.Error"/> and above are still routed
+            through <see cref="M:Etch.Panic.Invariant(Etch.PanicCode,System.String,System.String,System.Int32)"/> at the call site — <c>IEtchLogger</c> is for
+            operational diagnostics only, not exception-shaped failures.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Etch.IEtchLogger.IsEnabled(Etch.EtchLogLevel)">
+            <summary>Returns <see langword="true"/> if any message at <paramref name="level"/>
+            would be emitted.</summary>
+        </member>
+        <member name="M:Etch.IEtchLogger.Log(Etch.EtchLogLevel,System.Int32,System.String,System.ReadOnlySpan{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Emits a structured log event. The <paramref name="messageTemplate"/> is the message
+            with named placeholders, e.g. <c>Tile {tileIndex} classified</c>. The
+            <paramref name="args"/> span provides the argument values in matching index order.
+            Callers generated by <c>EtchLoggerGenerator</c> use <c>stackalloc</c> to avoid
+            heap allocation.
+            </summary>
+            <param name="level">Severity of the event.</param>
+            <param name="eventId">Application-defined event identifier.</param>
+            <param name="messageTemplate">Message template with named placeholders.</param>
+            <param name="args">Argument values, one per placeholder in <paramref name="messageTemplate"/>.</param>
+        </member>
+        <member name="T:Etch.NullEtchLogger">
+            <summary>
+            Default no-op logger. <see cref="M:Etch.NullEtchLogger.IsEnabled(Etch.EtchLogLevel)"/> always returns <see langword="false"/>
+            and <see cref="M:Etch.NullEtchLogger.Log(Etch.EtchLogLevel,System.Int32,System.String,System.ReadOnlySpan{System.Collections.Generic.KeyValuePair{System.String,System.Object}})"/> does nothing. AOT-clean, zero allocation, safe to use as a
+            compilation-unit-level singleton where no logging backend is wired up yet.
+            </summary>
+        </member>
+        <member name="P:Etch.NullEtchLogger.Instance">
+            <summary>Shared singleton instance. Safe to use wherever a <see cref="T:Etch.IEtchLogger"/>
+            is required but no logging backend has been configured yet.</summary>
+        </member>
+        <member name="M:Etch.NullEtchLogger.IsEnabled(Etch.EtchLogLevel)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Etch.NullEtchLogger.Log(Etch.EtchLogLevel,System.Int32,System.String,System.ReadOnlySpan{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Etch.Raster.Cpu</name>
+    </assembly>
+    <members>
+        <member name="T:Etch.Raster.Cpu.NonSeparableBlendHelpers">
+            <summary>
+            W3C Compositing and Blending Level 1 §9.17 helper functions for
+            non-separable blend modes (Hue, Saturation, Color, Luminosity).
+            All functions operate on linear-light float RGB in [0,1].
+            </summary>
+        </member>
+    </members>
+</doc>

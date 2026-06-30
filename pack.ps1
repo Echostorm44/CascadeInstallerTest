@@ -36,8 +36,10 @@ dotnet publish (Join-Path $root "CascadeInstallerTest.csproj") -c Release -r $ri
     --self-contained false -p:PublishAot=false -p:Version=$Version -o $publish
 if ($LASTEXITCODE -ne 0) { throw "app publish failed" }
 
-# 2. Shim, copied in alongside the app
-dotnet publish $shimProj -c Release -r $rid --self-contained false -p:PublishAot=false -o $shimOut
+# 2. Shim, copied in alongside the app. It MUST be stamped with the same -p:Version: that property
+#    propagates to the shared Cascade.UI.Updater.Core assembly, so without it the shim would ship a
+#    1.0.0.0 Core.dll that overwrites the app's version-stamped one and breaks the app's assembly bind.
+dotnet publish $shimProj -c Release -r $rid --self-contained false -p:PublishAot=false -p:Version=$Version -o $shimOut
 if ($LASTEXITCODE -ne 0) { throw "shim publish failed" }
 Copy-Item (Join-Path $shimOut "*") $publish -Recurse -Force
 
